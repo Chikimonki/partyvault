@@ -1,0 +1,11 @@
+partyvault/
+├── data/               # sample data
+├── julia/              # quality_analytics.jl
+├── lua/                # rules.lua
+├── perl/               # ingest.pl
+├── zig/                # src/main.zig, build.zig
+├── output/             # (will be volume-mounted)
+├── run_demo.sh
+├── Dockerfile
+├── docker-compose.yml
+└── README.md

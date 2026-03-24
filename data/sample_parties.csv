@@ -1,0 +1,11 @@
+id,legal_name,country,lei,entity_type,incorporation_date,status,address,contact_email,annual_revenue_eur
+P001,Deutsche Bank AG,DE,7LTWFZYICNSX8D621K86,CREDIT_INSTITUTION,1870-03-10,ACTIVE,"Taunusanlage 12, 60325 Frankfurt",contact@db.com,28900000000
+P002,BNP Paribas SA,FR,R0MUWSFPU8MPRO8K5P83,CREDIT_INSTITUTION,1966-05-01,ACTIVE,"16 Boulevard des Italiens, 75009 Paris",info@bnpparibas.com,46200000000
+P003,Acme Capital Ltd,,INVALIDLEI12345,INVESTMENT_FIRM,2019-06-15,ACTIVE,"",hello@acmecap.fake,5000000
+P004,Deutsche Bank AG,DE,7LTWFZYICNSX8D621K86,CREDIT_INSTITUTION,1870-03-10,ACTIVE,"Taunusanlage 12, Frankfurt 60325",kontakt@db.com,28900000000
+P005,Shady Offshore Holdings,KY,,SHELL_COMPANY,2023-11-01,ACTIVE,"PO Box 1234, George Town",,,
+P006,Nordea Bank Abp,FI,529900ODI3047E2LIV03,CREDIT_INSTITUTION,2018-10-01,ACTIVE,"Hamnbanegatan 5, 00020 Nordea Helsinki",info@nordea.fi,9200000000
+P007,,,,,,,,,
+P008,Jean-Pierre Müller & Associés,LU,5493001KJTIIGC8Y1R12,INVESTMENT_FIRM,2005-03-22,ACTIVE,"42 Rue de la Gare, L-1611 Luxembourg",jp@muller-associes.lu,12000000
+P009,Clearstream Banking S.A.,LU,549300OL514RA0SBER12,CSD,1970-01-01,ACTIVE,"42 Avenue JF Kennedy, L-1855 Luxembourg",info@clearstream.com,1800000000
+P010,FTX Trading Ltd,BS,NOTVALID999,EXCHANGE,2019-05-01,SUSPENDED,"Bahamas","",0

@@ -1,0 +1,26 @@
+[
+  {
+    "id": "P011",
+    "legal_name": "Euroclear Bank SA/NV",
+    "country": "BE",
+    "lei": "549300HWWJR97TH4DP82",
+    "entity_type": "CSD",
+    "incorporation_date": "1968-12-01",
+    "status": "ACTIVE",
+    "address": "1 Boulevard du Roi Albert II, 1210 Brussels",
+    "contact_email": "info@euroclear.com",
+    "annual_revenue_eur": 2100000000
+  },
+  {
+    "id": "P012",
+    "legal_name": "Goldman Sachs International",
+    "country": "GB",
+    "lei": "W22LROWP2IHZNBB6K528",
+    "entity_type": "CREDIT_INSTITUTION",
+    "incorporation_date": "1988-02-12",
+    "status": "ACTIVE",
+    "address": "Plumtree Court, 25 Shoe Lane, London EC4A 4AU",
+    "contact_email": "gs-info@gs.com",
+    "annual_revenue_eur": 47900000000
+  }
+]

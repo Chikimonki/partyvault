@@ -1,0 +1,12 @@
+id,legal_name,country,lei,entity_type,incorporation_date,status,address,contact_email,annual_revenue_eur,lei_valid,lei_status,email_valid,country_valid,dedup_key,source_file,cleansing_notes
+P001,Deutsche Bank AG,DE,7LTWFZYICNSX8D621K86,CREDIT_INSTITUTION,1870-03-10,ACTIVE,"Taunusanlage 12, 60325 Frankfurt",contact@db.com,28900000000,1,OK,1,1,4ce564e76e86e49c,sample_parties.csv,clean
+P002,BNP Paribas SA,FR,R0MUWSFPU8MPRO8K5P83,CREDIT_INSTITUTION,1966-05-01,ACTIVE,"16 Boulevard des Italiens, 75009 Paris",info@bnpparibas.com,46200000000,1,OK,1,1,95d0ce7b19bdaeba,sample_parties.csv,clean
+P003,Acme Capital Ltd,,INVALIDLEI12345,INVESTMENT_FIRM,2019-06-15,ACTIVE,,hello@acmecap.fake,5000000,0,INVALID_FORMAT,1,0,27dcb9b013ffdc22,sample_parties.csv,country_invalid_or_missing;lei_INVALID_FORMAT
+P004,Deutsche Bank AG,DE,7LTWFZYICNSX8D621K86,CREDIT_INSTITUTION,1870-03-10,ACTIVE,"Taunusanlage 12, Frankfurt 60325",kontakt@db.com,28900000000,1,OK,1,1,4ce564e76e86e49c,sample_parties.csv,DUPLICATE:matches_P001
+P005,Shady Offshore Holdings,KY,,SHELL_COMPANY,2023-11-01,ACTIVE,"PO Box 1234, George Town",,,0,MISSING,0,1,16feaa7711ee5525,sample_parties.csv,lei_MISSING;HIGH_RISK:shell_company;HIGH_RISK:offshore_no_lei
+P006,Nordea Bank Abp,FI,529900ODI3047E2LIV03,CREDIT_INSTITUTION,2018-10-01,ACTIVE,"Hamnbanegatan 5, 00020 Nordea Helsinki",info@nordea.fi,9200000000,1,OK,1,1,344acf190bec9e0b,sample_parties.csv,clean
+P008,Jean-Pierre Müller & Associés,LU,5493001KJTIIGC8Y1R12,INVESTMENT_FIRM,2005-03-22,ACTIVE,"42 Rue de la Gare, L-1611 Luxembourg",jp@muller-associes.lu,12000000,1,OK,1,1,ccb7b1998368b4b1,sample_parties.csv,clean
+P009,Clearstream Banking SA,LU,549300OL514RA0SBER12,CSD,1970-01-01,ACTIVE,"42 Avenue nue JF Kennedy, L-1855 Luxembourg",info@clearstream.com,1800000000,0,CHECKSUM_FAIL,1,1,91a79d980637568b,sample_parties.csv,name_normalized;address_normalized;lei_CHECKSUM_FAIL
+P010,FTX Trading Ltd,BS,NOTVALID999,EXCHANGE,2019-05-01,SUSPENDED,Bahamas,,0,0,INVALID_FORMAT,0,1,d035e80ddbe75b61,sample_parties.csv,lei_INVALID_FORMAT;HIGH_RISK:suspended_entity;HIGH_RISK:offshore_no_lei
+P011,Euroclear Bank SA/NV,BE,549300HWWJR97TH4DP82,CSD,1968-12-01,ACTIVE,"1 Boulevard du Roi Albert II, 1210 Brussels",info@euroclear.com,2100000000,0,CHECKSUM_FAIL,1,1,f8aa2dc21cafb1e6,sample_parties.json,lei_CHECKSUM_FAIL
+P012,Goldman Sachs International,GB,W22LROWP2IHZNBB6K528,CREDIT_INSTITUTION,1988-02-12,ACTIVE,"Plumtree Court, 25 Shoe Lane, London EC4A 4AU",gs-info@gs.com,47900000000,1,OK,1,1,215ef165a42f52a0,sample_parties.json,clean

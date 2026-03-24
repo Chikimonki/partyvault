@@ -1,0 +1,17 @@
+services:
+  partyvault:
+    build: .
+    container_name: partyvault_demo
+    volumes:
+      - ./output:/app/output
+
+  dashboard:
+    build: .
+    container_name: partyvault_dashboard
+    command: julia /app/web/dashboard.jl
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./output:/app/output
+    depends_on:
+      - partyvault

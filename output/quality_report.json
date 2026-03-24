@@ -1,0 +1,209 @@
+{
+  "total_records": 11,
+  "distributions": {
+    "by_country": [
+      {
+        "count": 2,
+        "country": "DE"
+      },
+      {
+        "count": 2,
+        "country": "LU"
+      },
+      {
+        "count": 1,
+        "country": "FR"
+      },
+      {
+        "count": 1,
+        "country": "KY"
+      },
+      {
+        "count": 1,
+        "country": "FI"
+      },
+      {
+        "count": 1,
+        "country": "BS"
+      },
+      {
+        "count": 1,
+        "country": "BE"
+      },
+      {
+        "count": 1,
+        "country": "GB"
+      }
+    ],
+    "by_entity_type": [
+      {
+        "count": 5,
+        "type": "CREDIT_INSTITUTION"
+      },
+      {
+        "count": 2,
+        "type": "INVESTMENT_FIRM"
+      },
+      {
+        "count": 2,
+        "type": "CSD"
+      },
+      {
+        "count": 1,
+        "type": "SHELL_COMPANY"
+      },
+      {
+        "count": 1,
+        "type": "EXCHANGE"
+      }
+    ],
+    "by_status": [
+      {
+        "status": "ACTIVE",
+        "count": 10
+      },
+      {
+        "status": "SUSPENDED",
+        "count": 1
+      }
+    ]
+  },
+  "quality_score": 62.1,
+  "anomalies": {
+    "details": [
+      {
+        "severity": "HIGH",
+        "type": "MISSING_COUNTRY",
+        "description": "Party has no country code",
+        "party_id": "P003"
+      },
+      {
+        "severity": "HIGH",
+        "type": "INVALID_LEI",
+        "description": "LEI present but invalid: INVALIDLEI12345",
+        "party_id": "P003"
+      },
+      {
+        "severity": "HIGH",
+        "type": "DUPLICATE_RECORD",
+        "description": "Potential duplicate: DUPLICATE:matches_P001",
+        "party_id": "P004"
+      },
+      {
+        "severity": "MEDIUM",
+        "type": "MISSING_LEI",
+        "description": "No LEI provided",
+        "party_id": "P005"
+      },
+      {
+        "severity": "CRITICAL",
+        "type": "HIGH_RISK_FLAG",
+        "description": "High risk flag: lei_MISSING;HIGH_RISK:shell_company;HIGH_RISK:offshore_no_lei",
+        "party_id": "P005"
+      },
+      {
+        "severity": "HIGH",
+        "type": "INVALID_LEI",
+        "description": "LEI present but invalid: 549300OL514RA0SBER12",
+        "party_id": "P009"
+      },
+      {
+        "severity": "HIGH",
+        "type": "INVALID_LEI",
+        "description": "LEI present but invalid: NOTVALID999",
+        "party_id": "P010"
+      },
+      {
+        "severity": "MEDIUM",
+        "type": "ZERO_REVENUE",
+        "description": "Entity reports zero revenue",
+        "party_id": "P010"
+      },
+      {
+        "severity": "CRITICAL",
+        "type": "HIGH_RISK_FLAG",
+        "description": "High risk flag: lei_INVALID_FORMAT;HIGH_RISK:suspended_entity;HIGH_RISK:offshore_no_lei",
+        "party_id": "P010"
+      },
+      {
+        "severity": "HIGH",
+        "type": "INVALID_LEI",
+        "description": "LEI present but invalid: 549300HWWJR97TH4DP82",
+        "party_id": "P011"
+      }
+    ],
+    "total": 10,
+    "by_severity": {
+      "MEDIUM": 2,
+      "LOW": 0,
+      "CRITICAL": 2,
+      "HIGH": 6
+    }
+  },
+  "generated_at": "2026-03-24 21:59:37",
+  "completeness": {
+    "address": {
+      "completeness_pct": 90.9,
+      "missing": 1,
+      "present": 10,
+      "uniqueness_pct": 100.0,
+      "unique_values": 10
+    },
+    "contact_email": {
+      "completeness_pct": 81.8,
+      "missing": 2,
+      "present": 9,
+      "uniqueness_pct": 100.0,
+      "unique_values": 9
+    },
+    "status": {
+      "completeness_pct": 100.0,
+      "missing": 0,
+      "present": 11,
+      "uniqueness_pct": 18.2,
+      "unique_values": 2
+    },
+    "id": {
+      "completeness_pct": 100.0,
+      "missing": 0,
+      "present": 11,
+      "uniqueness_pct": 100.0,
+      "unique_values": 11
+    },
+    "lei": {
+      "completeness_pct": 90.9,
+      "missing": 1,
+      "present": 10,
+      "uniqueness_pct": 90.0,
+      "unique_values": 9
+    },
+    "entity_type": {
+      "completeness_pct": 100.0,
+      "missing": 0,
+      "present": 11,
+      "uniqueness_pct": 45.5,
+      "unique_values": 5
+    },
+    "annual_revenue_eur": {
+      "completeness_pct": 90.9,
+      "missing": 1,
+      "present": 10,
+      "uniqueness_pct": 90.0,
+      "unique_values": 9
+    },
+    "country": {
+      "completeness_pct": 90.9,
+      "missing": 1,
+      "present": 10,
+      "uniqueness_pct": 80.0,
+      "unique_values": 8
+    },
+    "legal_name": {
+      "completeness_pct": 100.0,
+      "missing": 0,
+      "present": 11,
+      "uniqueness_pct": 90.9,
+      "unique_values": 10
+    }
+  }
+}

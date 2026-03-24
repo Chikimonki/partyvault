@@ -1,0 +1,21 @@
+partyvault/
+├── README.md
+├── setup.sh
+├── run_demo.sh
+├── data/
+│   ├── sample_parties.csv
+│   ├── sample_parties.json
+│   └── rules/
+│       └── classification.lua
+├── zig/
+│   ├── build.zig
+│   └── src/
+│       └── main.zig
+├── lua/
+│   └── rule_engine.lua
+├── julia/
+│   └── quality_analytics.jl
+├── perl/
+│   └── ingest_pipeline.pl
+└── output/
+    └── .gitkeep
