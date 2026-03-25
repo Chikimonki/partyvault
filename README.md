@@ -4,6 +4,34 @@
 financial market infrastructure, built with a polyglot stack optimized 
 for each layer's strengths.**
 
+# PartyVault
+
+> **Built in 24 hours** to demonstrate cryptographic party identity management for post-digitization capital markets.  
+> **Stack:** Perl (data cleansing) → Zig (crypto) → LuaJIT (rules) → Julia (analytics)  
+> **Each language doing what it does best.**
+
+---
+
+## Why This Exists
+
+On March 16, 2025, Euroclear and Clearstream digitized the €15 trillion Eurobond market. 
+That means millions of parties (issuers, investors, agents, custodians) now need cryptographically 
+verifiable digital identities, real-time KYC classification, and automated regulatory compliance.
+
+**Enterprise MDM platforms (Informatica, Reltio, IBM InfoSphere) take 6-12 months to implement 
+for a use case like this.**
+
+**I built a working prototype in one day** to show what's possible when you choose the right 
+tool for each layer instead of forcing everything into a single-language stack.
+
+This isn't production-ready. It's a demonstration of:
+- Systems-level thinking across paradigms
+- Performance-aware architecture (Zig + LuaJIT)
+- Data-native engineering (Perl + Julia)
+- Rapid prototyping without sacrificing correctness
+
+If your team has a hard problem that requires unconventional thinking, [let's talk](mailto:pan283@gmail.com).
+
 ## The Stack — Each Language Where It Excels
 
 | Layer | Language | Purpose |
@@ -23,7 +51,7 @@ party identity infrastructure must be:
 - **Adaptable** — LuaJIT rules can be updated by compliance teams without redeployment
 - **Analytical** — Julia provides statistical rigor for data quality that SQL dashboards can't match
 
-https://www.clearstream.com/clearstream-en/newsroom/260316-5012146 - "Clearstream and Euroclear Digitize Eurobond Issuance Revolutionizing the Market - by TABEA BEHR, 16.03.2026"
+"Clearstream and Euroclear Digitize Eurobond Issuance Revolutionizing the Market - by TABEA BEHR, 16.03.2026" - https://www.clearstream.com/clearstream-en/newsroom/260316-5012146 
 
 ## Roadmap
 
