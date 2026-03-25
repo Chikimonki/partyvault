@@ -23,6 +23,9 @@ party identity infrastructure must be:
 - **Adaptable** — LuaJIT rules can be updated by compliance teams without redeployment
 - **Analytical** — Julia provides statistical rigor for data quality that SQL dashboards can't match
 
+Videos:
+Run through - https://youtu.be/3KLy4c-r-w8
+Walk through - https://youtu.be/tlr9CJlRpjU
 ## Quick Start
 
 ```bash
