@@ -10,7 +10,9 @@ for each layer's strengths.**
 > **Stack:** Perl (data cleansing) → Zig (crypto) → LuaJIT (rules) → Julia (analytics)  
 > **Each language doing what it does best.**
 
----
+Videos:
+1 https://youtu.be/3KLy4c-r-w8
+2 https://youtu.be/tlr9CJlRpjU
 
 ## Why This Exists
 
