@@ -27,20 +27,6 @@ https://www.clearstream.com/clearstream-en/newsroom/260316-5012146 - "Clearstrea
 
 ## Roadmap
 
-### v0.2 (Q2 2025)
-- [ ] REST API (OpenResty + LuaJIT)
-- [ ] Live GLEIF LEI lookup integration
-- [ ] EU Consolidated Sanctions List screening
-- [ ] SQLite persistent storage
-- [ ] Multi-tenant support
-
-### v0.3 (Q3 2025)
-- [ ] eIDAS 2.0 verifiable credential issuance
-- [ ] Real-time change detection
-- [ ] Webhook notifications
-- [ ] PostgreSQL backend option
-- [ ] Docker Compose multi-node deployment
-
 ### v1.0 (Q4 2025)
 - [ ] Production-grade security audit
 - [ ] SOC 2 Type II compliance
