@@ -15,7 +15,7 @@ for each layer's strengths.**
 
 ## Why This Stack?
 
-In a world where a €15T+ Eurobond market just went digital (March 2025), https://www.clearstream.com/clearstream-en/newsroom/260316-5012146 - "Clearstream and Euroclear Digitize Eurobond Issuance Revolutionizing the Market - by TABEA BEHR, 16.03.2026",
+In a world where a €15T+ Eurobond market just went digital (March 2025), 
 party identity infrastructure must be:
 
 - **Fast** — Zig and LuaJIT deliver near-C performance without GC pauses
@@ -23,9 +23,30 @@ party identity infrastructure must be:
 - **Adaptable** — LuaJIT rules can be updated by compliance teams without redeployment
 - **Analytical** — Julia provides statistical rigor for data quality that SQL dashboards can't match
 
-Videos:
-Run through - https://youtu.be/3KLy4c-r-w8
-Walk through - https://youtu.be/tlr9CJlRpjU
+https://www.clearstream.com/clearstream-en/newsroom/260316-5012146 - "Clearstream and Euroclear Digitize Eurobond Issuance Revolutionizing the Market - by TABEA BEHR, 16.03.2026"
+
+## Roadmap
+
+### v0.2 (Q2 2025)
+- [ ] REST API (OpenResty + LuaJIT)
+- [ ] Live GLEIF LEI lookup integration
+- [ ] EU Consolidated Sanctions List screening
+- [ ] SQLite persistent storage
+- [ ] Multi-tenant support
+
+### v0.3 (Q3 2025)
+- [ ] eIDAS 2.0 verifiable credential issuance
+- [ ] Real-time change detection
+- [ ] Webhook notifications
+- [ ] PostgreSQL backend option
+- [ ] Docker Compose multi-node deployment
+
+### v1.0 (Q4 2025)
+- [ ] Production-grade security audit
+- [ ] SOC 2 Type II compliance
+- [ ] Enterprise SLA support
+- [ ] MiCA compliance toolkit
+
 ## Quick Start
 
 ```bash
