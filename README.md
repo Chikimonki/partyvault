@@ -15,7 +15,7 @@ for each layer's strengths.**
 
 ## Why This Stack?
 
-In a world where a €15T+ Eurobond market just went digital (March 2025), 
+In a world where a €15T+ Eurobond market just went digital (March 2025), https://www.clearstream.com/clearstream-en/newsroom/260316-5012146 - "Clearstream and Euroclear Digitize Eurobond Issuance Revolutionizing the Market - by TABEA BEHR, 16.03.2026",
 party identity infrastructure must be:
 
 - **Fast** — Zig and LuaJIT deliver near-C performance without GC pauses
