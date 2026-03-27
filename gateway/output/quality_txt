@@ -1,0 +1,35 @@
+╔══════════════════════════════════════════════════════════════╗
+║          PartyVault Data Quality Analytics Report           ║
+╠══════════════════════════════════════════════════════════════╣
+║  Generated: 2026-03-25 00:13:31
+║  Records Analyzed: 11
+║                                                              
+║  ┌─── OVERALL QUALITY SCORE ───┐                            
+║  │                              │                            
+║  │      62.1 / 100.0              │
+║  │      ⚠️  FAIR                       │
+║  │                              │                            
+║  └──────────────────────────────┘                            
+║                                                              
+║  COMPLETENESS:                                               
+║    ✅ id                        100.0%  (11/11)
+║    ✅ legal_name                100.0%  (11/11)
+║    ✅ country                    90.9%  (10/11)
+║    ✅ lei                        90.9%  (10/11)
+║    ✅ entity_type               100.0%  (11/11)
+║    ✅ status                    100.0%  (11/11)
+║    ✅ address                    90.9%  (10/11)
+║    ⚠️  contact_email              81.8%  (9/11)
+║    ✅ annual_revenue_eur         90.9%  (10/11)
+║                                                              
+║  ANOMALIES:                                                  
+║    CRITICAL: 2
+║    HIGH:     6
+║    MEDIUM:   2
+║    LOW:      0
+║    TOTAL:    10
+║                                                              
+║  DISTRIBUTIONS:                                              
+║    Countries: 8  |  Entity Types: 5  |  Statuses: 2
+║                                                              
+╚══════════════════════════════════════════════════════════════╝

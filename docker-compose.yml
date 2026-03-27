@@ -4,14 +4,15 @@ services:
     container_name: partyvault_demo
     volumes:
       - ./output:/app/output
+    # If you want to run pipeline once and exit, keep as is.
+    # To keep it running for API, you might want to run it in the background.
 
-  dashboard:
-    build: .
-    container_name: partyvault_dashboard
-    command: julia /app/web/dashboard.jl
+  gateway:
+    build: ./gateway
+    container_name: partyvault_gateway
     ports:
-      - "8080:8080"
+      - "8081:8080"   # map host 8081 to container 8080
     volumes:
-      - ./output:/app/output
+      - ./output:/app/output   # share output files
     depends_on:
       - partyvault
