@@ -1,0 +1,47 @@
+name: PartyVault CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          load: true
+          tags: partyvault:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Run pipeline
+        run: |
+          mkdir -p output
+          docker run --rm -v ${{ github.workspace }}/output:/app/output partyvault:latest
+
+      - name: Verify output files
+        run: |
+          test -f output/quality_report.json
+          test -f output/fingerprinted_parties.txt
+          test -f output/cleansed_parties.csv
+          test -f output/classified_parties.txt
+          echo "✅ All output files present"
+
+      - name: Upload pipeline outputs (optional)
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pipeline-outputs
+          path: output/
