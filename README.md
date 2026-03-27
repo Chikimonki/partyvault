@@ -1,5 +1,7 @@
 # 🔐 PartyVault — Cryptographic Party Identity Service
 
+![CI](https://github.com/Chikimonki/partyvault/actions/workflows/ci.yml/badge.svg)
+
 **A proof-of-concept demonstrating cryptographic identity management for 
 financial market infrastructure, built with a polyglot stack optimized 
 for each layer's strengths.**
