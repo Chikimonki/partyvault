@@ -86,6 +86,17 @@ https://www.clearstream.com/clearstream-en/newsroom/260316-5012146 - "Clearstrea
 - [ ] Enterprise SLA support
 - [ ] MiCA compliance toolkit
 
+## Real‑time Streaming
+
+
+PartyVault now uses **Redis Streams** to push every party record to a real‑time event stream. A Python consumer listens for high‑risk parties and prints alerts immediately.
+
+Try it locally:
+1. `docker run -d --name partyvault-redis -p 6379:6379 redis:7-alpine`
+2. Run the gateway (`docker run --rm --network host partyvault-gateway`)
+3. In another terminal, run `python3 consumer.py` (inside a virtual environment)
+
+ 
 ## Quick Start
 
 ```bash
