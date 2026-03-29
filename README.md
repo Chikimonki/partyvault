@@ -3,7 +3,7 @@
 ![CI](https://github.com/Chikimonki/partyvault/actions/workflows/ci.yml/badge.svg)
 
 **A proof-of-concept demonstrating cryptographic identity management for 
-financial market infrastructure, built with a polyglot stack optimized 
+financial market infrastructure, built with a polyglot Zig + LuaJIT FFI + Julia + Python + Go + HTML/CSS stack optimized 
 for each layer's strengths.**
 
 # PartyVault
