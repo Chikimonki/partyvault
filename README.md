@@ -55,12 +55,10 @@ party identity infrastructure must be:
 - **Adaptable** — LuaJIT rules can be updated by compliance teams without redeployment
 - **Analytical** — Julia provides statistical rigor for data quality that SQL dashboards can't match
 
-<<<<<<< HEAD
 "Clearstream and Euroclear Digitize Eurobond Issuance Revolutionizing the Market - by TABEA BEHR, 16.03.2026" - https://www.clearstream.com/clearstream-en/newsroom/260316-5012146 
 
 ## Roadmap
 
-=======
 https://www.clearstream.com/clearstream-en/newsroom/260316-5012146 - "Clearstream and Euroclear Digitize Eurobond Issuance Revolutionizing the Market - by TABEA BEHR, 16.03.2026"
 
 ## Roadmap
@@ -79,7 +77,6 @@ https://www.clearstream.com/clearstream-en/newsroom/260316-5012146 - "Clearstrea
 - [ ] PostgreSQL backend option
 - [ ] Docker Compose multi-node deployment
 
->>>>>>> 0573f14 (Add ci.yml and other changes)
 ### v1.0 (Q4 2025)
 - [ ] Production-grade security audit
 - [ ] SOC 2 Type II compliance
