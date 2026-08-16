@@ -1,0 +1,41 @@
+                PARTY IDENTITY IN FINANCIAL MARKETS
+                ===================================
+
+Current State                     Opportunity
+─────────────                     ───────────
+┌──────────────┐                  ┌──────────────────────┐
+│ Fragmented   │                  │ Unified Crypto       │
+│ LEI + BIC +  │     ────►        │ Identity Service     │
+│ Proprietary  │                  │                      │
+│ IDs loosely  │                  │ • Verifiable         │
+│ stitched     │                  │ • Interoperable      │
+└──────────────┘                  │ • Real-time          │
+                                  │ • Regulatory-native  │
+┌──────────────┐                  │ • Audit-complete     │
+│ Paper-based  │                  │                      │
+│ processes    │     ────►        │ Target customers:    │
+│ (until last  │                  │ • ICSDs              │
+│  week!)      │                  │ • Custodian banks    │
+└──────────────┘                  │ • Issuance platforms │
+                                  │ • RegTech firms      │
+┌──────────────┐                  │ • CCPs               │
+│ Batch KYC    │                  │                      │
+│ refresh      │     ────►        │ Revenue model:       │
+│ cycles       │                  │ • Per-verification   │
+└──────────────┘                  │ • Annual SaaS        │
+                                  │ • Data quality sub   │
+                                  └──────────────────────┘
+
+
+
+### Competitors you'd face:
+- **GLEIF** (Global LEI Foundation) — but they're a utility, not innovating fast
+- **Refinitiv/LSEG** — entity data, but bloated enterprise
+- **Bloomberg** — entity data within terminal ecosystem
+- **Moody's/Bureau van Dijk (Orbis)** — corporate data, not crypto-native
+- **Startups**: Quantexa, Encompass, Cynopsis — but focused on AML screening, not identity infrastructure
+
+### Your gap to exploit:
+**Nobody is building cryptographically verifiable, real-time party identity infrastructure purpose-built for the post-digitization capital markets.** The incumbents are all pre-digital-era data aggregators. You'd be building for the world that started on March 16, 2025.
+
+That's a real opportunity. The mockup above is your first step toward demonstrating it.

@@ -1,0 +1,30 @@
+Raw Party Data (CSV, JSON, XML, ...)
+        │
+        ▼
+┌─────────────────────────┐
+│  PERL: Ingest & Cleanse │  ← Multi-format parsing, name normalization,
+│                         │    LEI validation, dedup fingerprinting,
+│                         │    high-risk flagging
+└────────┬────────────────┘
+         │
+         ▼
+┌─────────────────────────┐
+│  ZIG: Crypto Identity   │  ← BLAKE3 fingerprinting, Ed25519 attestation,
+│                         │    trust scoring, identity verification
+└────────┬────────────────┘
+         │
+         ▼
+┌─────────────────────────┐
+│  LUAJIT: Rule Engine    │  ← KYC classification, regulatory obligations,
+│                         │    risk scoring, sanctions screening
+│                         │    (hot-swappable rules!)
+└────────┬────────────────┘
+         │
+         ▼
+┌─────────────────────────┐
+│  JULIA: Quality Analytics│  ← Completeness profiling, anomaly detection,
+│                         │    distribution analysis, quality scoring
+└─────────────────────────┘
+         │
+         ▼
+    Quality Report + Classified, Fingerprinted, Attested Party Records
