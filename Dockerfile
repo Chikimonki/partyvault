@@ -5,8 +5,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     luajit \
     ca-certificates \
     wget \
+    xz-utils \
     && rm -rf /var/lib/apt/lists/*
 
+# Install Zig 0.13.0
+RUN wget -q https://ziglang.org/download/0.13.0/zig-linux-x86_64-0.13.0.tar.xz && \
+    tar xf zig-linux-x86_64-0.13.0.tar.xz && \
+    mv zig-linux-x86_64-0.13.0 /opt/zig && \
+    ln -sf /opt/zig/zig /usr/local/bin/zig && \
+    rm zig-linux-x86_64-0.13.0.tar.xz
+
+# Install Julia
 RUN wget -q https://julialang-s3.julialang.org/bin/linux/x64/1.11/julia-1.11.3-linux-x86_64.tar.gz && \
     tar xzf julia-1.11.3-linux-x86_64.tar.gz && \
     mv julia-1.11.3 /opt/julia && \
@@ -15,17 +24,16 @@ RUN wget -q https://julialang-s3.julialang.org/bin/linux/x64/1.11/julia-1.11.3-l
 
 RUN julia -e 'using Pkg; Pkg.add(["CSV", "DataFrames", "Statistics", "JSON", "HTTP"])'
 
-COPY zig/partyvault-crypto /usr/local/bin/partyvault-crypto
-RUN chmod +x /usr/local/bin/partyvault-crypto
-
 WORKDIR /app
-COPY data/ ./data/
-COPY perl/ ./perl/
-COPY lua/ ./lua/
-COPY julia/ ./julia/
-COPY web/ ./web/
-COPY run_demo.sh ./
-RUN chmod +x run_demo.sh
+COPY . .
+
+# Build Zig crypto core
+RUN cd zig && zig build
+
+# Move binary to expected location
+RUN cp zig/zig-out/bin/partyvault-crypto /usr/local/bin/partyvault-crypto
+
 RUN mkdir -p output
+RUN chmod +x run_demo.sh
 
 CMD ["./run_demo.sh"]
