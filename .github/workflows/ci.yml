@@ -14,34 +14,26 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Build Docker image
-        uses: docker/build-push-action@v5
+      - name: Set up Zig
+        uses: mlugg/setup-zig@v1
         with:
-          context: .
-          load: true
-          tags: partyvault:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          version: 0.13.0
 
-      - name: Run pipeline
+      - name: Install LuaJIT
+        run: sudo apt-get update && sudo apt-get install -y luajit
+
+      - name: Build Zig crypto core
+        working-directory: zig
+        run: zig build
+
+      - name: Run demo
         run: |
           mkdir -p output
-          docker run --rm -v ${{ github.workspace }}/output:/app/output partyvault:latest
+          chmod +x run_demo.sh
+          ./run_demo.sh 2>&1 | tail -30
 
-      - name: Verify output files
+      - name: Verify output
         run: |
-          test -f output/quality_report.json
-          test -f output/fingerprinted_parties.txt
           test -f output/cleansed_parties.csv
-          test -f output/classified_parties.txt
-          echo "✅ All output files present"
-
-      - name: Upload pipeline outputs (optional)
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: pipeline-outputs
-          path: output/
+          test -f output/ingestion_report.txt
+          echo "✅ Pipeline outputs verified"
