@@ -12,10 +12,7 @@ echo "║                                                              ║"
 echo "╚══════════════════════════════════════════════════════════════╝"
 echo ""
 
-<<<<<<< HEAD
 # Colors
-=======
->>>>>>> 2d6a5aa629690bf00821eb5ec395123a0247b587
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 CYAN='\033[0;36m'
@@ -28,11 +25,8 @@ cd "$SCRIPT_DIR"
 
 mkdir -p output
 
-<<<<<<< HEAD
-# ============================================================
-# Phase 1: Build Zig Crypto Core
-# ============================================================
-echo -e "${CYAN}━━━ Phase 0: Building Zig Cryptographic Core ━━━${NC}"
+# =====================================================# Phase 1: Build Zig Crypto Core
+# =====================================================echo -e "${CYAN}━━━ Phase 0: Building Zig Cryptographic Core ━━━${NC}"
 echo ""
 
 cd zig
@@ -43,7 +37,6 @@ else
 fi
 cd "$SCRIPT_DIR"
 echo ""
-=======
 # Find the Zig binary wherever it lives
 ZIG_BIN=""
 if command -v partyvault-crypto &>/dev/null; then
@@ -54,10 +47,8 @@ elif [ -f ./zig/zig-out/bin/partyvault-crypto ]; then
     ZIG_BIN="./zig/zig-out/bin/partyvault-crypto"
 fi
 
-# ============================================================
-# Phase 0: Build Zig if needed (skip if binary exists)
-# ============================================================
-if [ -z "$ZIG_BIN" ]; then
+# =====================================================# Phase 0: Build Zig if needed (skip if binary exists)
+# =====================================================if [ -z "$ZIG_BIN" ]; then
     echo -e "${CYAN}━━━ Phase 0: Building Zig Cryptographic Core ━━━${NC}"
     echo ""
     if command -v zig &>/dev/null; then
@@ -73,17 +64,12 @@ if [ -z "$ZIG_BIN" ]; then
         echo -e "${RED}✗ Zig not available — using fallback${NC}"
     fi
     echo ""
-else
     echo -e "${CYAN}━━━ Phase 0: Zig Cryptographic Core ━━━${NC}"
     echo -e "${GREEN}✓ Pre-compiled binary found: $ZIG_BIN${NC}"
     echo ""
-fi
->>>>>>> 2d6a5aa629690bf00821eb5ec395123a0247b587
 
-# ============================================================
-# Phase 1: Perl Data Ingestion
-# ============================================================
-echo -e "${CYAN}━━━ Phase 1: Data Ingestion & Cleansing (Perl) ━━━${NC}"
+# =====================================================# Phase 1: Perl Data Ingestion
+# =====================================================echo -e "${CYAN}━━━ Phase 1: Data Ingestion & Cleansing (Perl) ━━━${NC}"
 echo ""
 
 perl perl/ingest_pipeline.pl \
@@ -96,23 +82,17 @@ echo ""
 echo -e "${GREEN}✓ Ingestion complete${NC}"
 echo ""
 
-<<<<<<< HEAD
 # Display ingestion report
-=======
->>>>>>> 2d6a5aa629690bf00821eb5ec395123a0247b587
 if [ -f ./output/ingestion_report.txt ]; then
     echo -e "${YELLOW}--- Ingestion Report ---${NC}"
     cat ./output/ingestion_report.txt
     echo ""
 fi
 
-# ============================================================
-# Phase 2: Zig Cryptographic Fingerprinting
-# ============================================================
-echo -e "${CYAN}━━━ Phase 2: Cryptographic Identity (Zig) ━━━${NC}"
+# =====================================================# Phase 2: Zig Cryptographic Fingerprinting
+# =====================================================echo -e "${CYAN}━━━ Phase 2: Cryptographic Identity (Zig) ━━━${NC}"
 echo ""
 
-<<<<<<< HEAD
 # Generate a service keypair
 echo -e "${YELLOW}Generating attestation keypair...${NC}"
 if [ -f ./zig/zig-out/bin/partyvault-crypto ]; then
@@ -127,7 +107,6 @@ if [ -f ./zig/zig-out/bin/partyvault-crypto ]; then
 else
     echo -e "${RED}Zig binary not available — generating mock fingerprints${NC}"
     # Fallback: use Perl for hashing if Zig build failed
-=======
 if [ -n "$ZIG_BIN" ]; then
     echo -e "${YELLOW}Generating attestation keypair...${NC}"
     $ZIG_BIN keygen | tee ./output/keypair.txt
@@ -139,7 +118,6 @@ if [ -n "$ZIG_BIN" ]; then
         tee ./output/fingerprinted_parties.txt
 else
     echo -e "${RED}Zig binary not available — generating mock fingerprints${NC}"
->>>>>>> 2d6a5aa629690bf00821eb5ec395123a0247b587
     perl -MDigest::SHA=sha256_hex -ne '
         next if $. == 1;
         chomp;
@@ -154,10 +132,8 @@ echo ""
 echo -e "${GREEN}✓ Cryptographic fingerprinting complete${NC}"
 echo ""
 
-# ============================================================
-# Phase 3: LuaJIT Business Rule Engine
-# ============================================================
-echo -e "${CYAN}━━━ Phase 3: Regulatory Classification (LuaJIT) ━━━${NC}"
+# =====================================================# Phase 3: LuaJIT Business Rule Engine
+# =====================================================echo -e "${CYAN}━━━ Phase 3: Regulatory Classification (LuaJIT) ━━━${NC}"
 echo ""
 
 cat ./output/fingerprinted_parties.txt | \
@@ -168,10 +144,8 @@ echo ""
 echo -e "${GREEN}✓ Regulatory classification complete${NC}"
 echo ""
 
-# ============================================================
-# Phase 4: Julia Data Quality Analytics
-# ============================================================
-echo -e "${CYAN}━━━ Phase 4: Data Quality Analytics (Julia) ━━━${NC}"
+# =====================================================# Phase 4: Julia Data Quality Analytics
+# =====================================================echo -e "${CYAN}━━━ Phase 4: Data Quality Analytics (Julia) ━━━${NC}"
 echo ""
 
 julia julia/quality_analytics.jl \
@@ -182,10 +156,8 @@ echo ""
 echo -e "${GREEN}✓ Quality analytics complete${NC}"
 echo ""
 
-# ============================================================
-# Summary
-# ============================================================
-echo -e "${BOLD}${CYAN}━━━ Pipeline Complete ━━━${NC}"
+# =====================================================# Summary
+# =====================================================echo -e "${BOLD}${CYAN}━━━ Pipeline Complete ━━━${NC}"
 echo ""
 echo -e "${BOLD}Output Files:${NC}"
 echo "  📄 output/cleansed_parties.csv       — Cleansed & normalized party data (Perl)"
@@ -203,18 +175,13 @@ echo ""
 echo -e "${GREEN}${BOLD}Each language doing what it does best. That's the point.${NC}"
 echo ""
 
-<<<<<<< HEAD
-# ============================================================
-# Quick Stats
-# ============================================================
-if [ -f ./output/quality_report.json ]; then
+# =====================================================# Quick Stats
+# =====================================================if [ -f ./output/quality_report.json ]; then
     echo -e "${YELLOW}--- Quick Stats from Quality Report ---${NC}"
     # Use Julia or Perl to extract key stats
-=======
 # Quick Stats
 if [ -f ./output/quality_report.json ]; then
     echo -e "${YELLOW}--- Quick Stats from Quality Report ---${NC}"
->>>>>>> 2d6a5aa629690bf00821eb5ec395123a0247b587
     perl -MJSON -e '
         local $/;
         my $json = decode_json(<STDIN>);
@@ -225,4 +192,5 @@ if [ -f ./output/quality_report.json ]; then
         printf "  High Issues:      %d\n", $json->{anomalies}{by_severity}{HIGH} // 0;
     ' < ./output/quality_report.json 2>/dev/null || echo "  (install JSON perl module for stats)"
     echo ""
+fi
 fi

@@ -1,21 +1,18 @@
 const std = @import("std");
 const crypto = std.crypto;
-<<<<<<< HEAD
 const fmt = std.fmt;
 const mem = std.mem;
 const io = std.io;
 const json = std.json;
 
-// ============================================================
-// PartyVault Cryptographic Identity Core
+// =====================================================// PartyVault Cryptographic Identity Core
 // 
 // Provides:
 //   - Deterministic party fingerprinting (BLAKE3)
 //   - Ed25519 keypair generation for identity attestation
 //   - Identity attestation signing & verification
 //   - Party record hashing for deduplication detection
-// ============================================================
-
+// =====================================================
 const PartyIdentity = struct {
     party_id: []const u8,
     legal_name: []const u8,
@@ -183,72 +180,12 @@ fn processPartyLine(
             trust_score,
         },
     );
+
 }
 
 pub fn main() !void {
-    const stdout = io.getStdOut().writer();
-    const stderr = io.getStdErr().writer();
-    const stdin = io.getStdIn();
-
-    var args = std.process.args();
-    _ = args.skip(); // program name
-
-    const mode = args.next() orelse "process";
-
-    if (mem.eql(u8, mode, "process")) {
-        // Read party records from stdin, output fingerprinted identities
-        try stderr.print("[ZIG/CRYPTO] Processing party records...\n", .{});
-        try stdout.print("# PartyVault Cryptographic Identity Output\n", .{});
-        try stdout.print("# Format: TYPE|ID|NAME|COUNTRY|FINGERPRINT|LEI|ENTITY_TYPE|VALIDATIONS|TRUST_SCORE\n", .{});
-
-        var buf_reader = io.bufferedReader(stdin.reader());
-        var reader = buf_reader.reader();
-        var line_buf: [4096]u8 = undefined;
-        var line_num: usize = 0;
-
-        while (reader.readUntilDelimiterOrEof(&line_buf, '\n')) |maybe_line| {
-            const line = maybe_line orelse break;
-            line_num += 1;
-            if (line_num == 1) continue; // skip header
-            if (line.len == 0) continue;
-
-            processPartyLine(line, stdout, line_num) catch |err| {
-                try stderr.print("[ZIG/CRYPTO] Error on line {d}: {s}\n", .{ line_num, @errorName(err) });
-            };
-        } else |err| {
-            try stderr.print("[ZIG/CRYPTO] Read error: {s}\n", .{@errorName(err)});
-        }
-
-        try stderr.print("[ZIG/CRYPTO] Processed {d} lines.\n", .{line_num});
-    } else if (mem.eql(u8, mode, "keygen")) {
-        // Generate an Ed25519 keypair for identity attestation
-        try stderr.print("[ZIG/CRYPTO] Generating Ed25519 keypair...\n", .{});
-
-        var seed: [32]u8 = undefined;
-        crypto.random.bytes(&seed);
-
-        const keypair = crypto.sign.Ed25519.KeyPair.create(seed);
-
-        var pub_hex: [64]u8 = undefined;
-        _ = std.fmt.bufPrint(&pub_hex, "{s}", .{std.fmt.fmtSliceHexLower(&keypair.public_key.bytes)}) catch unreachable;
-
-        var sec_hex: [128]u8 = undefined;
-        _ = std.fmt.bufPrint(&sec_hex, "{s}", .{std.fmt.fmtSliceHexLower(&keypair.secret_key.bytes)}) catch unreachable;
-
-        try stdout.print("KEYPAIR|public={s}|secret={s}\n", .{ pub_hex, sec_hex });
-        try stderr.print("[ZIG/CRYPTO] Keypair generated successfully.\n", .{});
-    } else if (mem.eql(u8, mode, "version")) {
-        try stdout.print("PartyVault Crypto Core v0.1.0 (Zig {s})\n", .{@import("builtin").zig_version_string});
-    } else {
-        try stderr.print("Usage: partyvault-crypto [process|keygen|version]\n", .{});
-=======
-const mem = std.mem;
-
-pub fn main() !void {
-    // --- stdout: new buffered writer ---
-    var out_buffer: [4096]u8 = undefined;
-    var out_writer = std.fs.File.stdout().writer(&out_buffer);
-    const stdout = &out_writer.interface;
+    // --- stdout ---
+    const stdout = std.io.getStdOut().writer();
 
     // --- parse command line ---
     var args = std.process.args();
@@ -257,43 +194,35 @@ pub fn main() !void {
 
     if (mem.eql(u8, mode, "keygen")) {
         std.debug.print("[ZIG/CRYPTO] Generating Ed25519 keypair...\n", .{});
-        var keypair = std.crypto.sign.Ed25519.KeyPair.generate();
+        var keypair = try std.crypto.sign.Ed25519.KeyPair.create(null);
         try stdout.print("KEYPAIR|public=", .{});
         for (keypair.public_key.toBytes()) |b| {
             try stdout.print("{x:0>2}", .{b});
         }
         try stdout.print("|secret=REDACTED\n", .{});
-        try stdout.flush();
     } else if (mem.eql(u8, mode, "version")) {
         try stdout.print("PartyVault Crypto Core v0.1.0 (Zig)\n", .{});
-        try stdout.flush();
     } else if (mem.eql(u8, mode, "process")) {
         std.debug.print("[ZIG/CRYPTO] Processing party records...\n", .{});
         try stdout.print("# PartyVault Cryptographic Identity Output\n", .{});
-        try stdout.flush();
 
-        // --- stdin: new reader with takeDelimiterInclusive ---
-        var stdin_buffer: [4096]u8 = undefined;
-        var stdin_reader = std.fs.File.stdin().reader(&stdin_buffer);
-        const reader = &stdin_reader.interface;
+        const stdin = std.io.getStdIn();
+        var reader = stdin.reader();
 
         var line_num: usize = 0;
 
         while (true) {
-            // Read one line including newline (uses internal buffer)
-            const line = reader.takeDelimiterInclusive('\n') catch |err| switch (err) {
-                error.EndOfStream => break,
-                else => {
-                    std.debug.print("[ZIG/CRYPTO] Read error: {s}\n", .{@errorName(err)});
-                    break;
-                },
+            // Read one line including newline
+            var line_buffer: [4096]u8 = undefined;
+            const maybe_line = reader.readUntilDelimiterOrEof(&line_buffer, '\n') catch {
+                break;
             };
+            const line = maybe_line orelse break;
             line_num += 1;
 
             // Skip header line
             if (line_num == 1) continue;
 
-            // Remove trailing newline (takeDelimiterInclusive includes it)
             if (line.len == 0) continue;
             const record = if (line[line.len-1] == '\n') line[0..line.len-1] else line;
             if (record.len == 0) continue;
@@ -380,13 +309,11 @@ pub fn main() !void {
                 if (country_valid) "true" else "false",
                 trust,
             });
-            try stdout.flush();
-        }
+            }
 
         std.debug.print("[ZIG/CRYPTO] Processed {d} lines.\n", .{line_num});
     } else {
         std.debug.print("Usage: partyvault-crypto [process|keygen|version]\n", .{});
->>>>>>> 2d6a5aa629690bf00821eb5ec395123a0247b587
         std.process.exit(1);
     }
 }
