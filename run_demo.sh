@@ -12,7 +12,10 @@ echo "║                                                              ║"
 echo "╚══════════════════════════════════════════════════════════════╝"
 echo ""
 
+<<<<<<< HEAD
 # Colors
+=======
+>>>>>>> 2d6a5aa629690bf00821eb5ec395123a0247b587
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 CYAN='\033[0;36m'
@@ -25,6 +28,7 @@ cd "$SCRIPT_DIR"
 
 mkdir -p output
 
+<<<<<<< HEAD
 # ============================================================
 # Phase 1: Build Zig Crypto Core
 # ============================================================
@@ -39,6 +43,42 @@ else
 fi
 cd "$SCRIPT_DIR"
 echo ""
+=======
+# Find the Zig binary wherever it lives
+ZIG_BIN=""
+if command -v partyvault-crypto &>/dev/null; then
+    ZIG_BIN="partyvault-crypto"
+elif [ -f ./zig/partyvault-crypto ]; then
+    ZIG_BIN="./zig/partyvault-crypto"
+elif [ -f ./zig/zig-out/bin/partyvault-crypto ]; then
+    ZIG_BIN="./zig/zig-out/bin/partyvault-crypto"
+fi
+
+# ============================================================
+# Phase 0: Build Zig if needed (skip if binary exists)
+# ============================================================
+if [ -z "$ZIG_BIN" ]; then
+    echo -e "${CYAN}━━━ Phase 0: Building Zig Cryptographic Core ━━━${NC}"
+    echo ""
+    if command -v zig &>/dev/null; then
+        cd zig
+        if zig build 2>&1; then
+            echo -e "${GREEN}✓ Zig crypto core built successfully${NC}"
+            ZIG_BIN="./zig/zig-out/bin/partyvault-crypto"
+        else
+            echo -e "${RED}✗ Zig build failed — using fallback${NC}"
+        fi
+        cd "$SCRIPT_DIR"
+    else
+        echo -e "${RED}✗ Zig not available — using fallback${NC}"
+    fi
+    echo ""
+else
+    echo -e "${CYAN}━━━ Phase 0: Zig Cryptographic Core ━━━${NC}"
+    echo -e "${GREEN}✓ Pre-compiled binary found: $ZIG_BIN${NC}"
+    echo ""
+fi
+>>>>>>> 2d6a5aa629690bf00821eb5ec395123a0247b587
 
 # ============================================================
 # Phase 1: Perl Data Ingestion
@@ -56,7 +96,10 @@ echo ""
 echo -e "${GREEN}✓ Ingestion complete${NC}"
 echo ""
 
+<<<<<<< HEAD
 # Display ingestion report
+=======
+>>>>>>> 2d6a5aa629690bf00821eb5ec395123a0247b587
 if [ -f ./output/ingestion_report.txt ]; then
     echo -e "${YELLOW}--- Ingestion Report ---${NC}"
     cat ./output/ingestion_report.txt
@@ -69,6 +112,7 @@ fi
 echo -e "${CYAN}━━━ Phase 2: Cryptographic Identity (Zig) ━━━${NC}"
 echo ""
 
+<<<<<<< HEAD
 # Generate a service keypair
 echo -e "${YELLOW}Generating attestation keypair...${NC}"
 if [ -f ./zig/zig-out/bin/partyvault-crypto ]; then
@@ -83,6 +127,19 @@ if [ -f ./zig/zig-out/bin/partyvault-crypto ]; then
 else
     echo -e "${RED}Zig binary not available — generating mock fingerprints${NC}"
     # Fallback: use Perl for hashing if Zig build failed
+=======
+if [ -n "$ZIG_BIN" ]; then
+    echo -e "${YELLOW}Generating attestation keypair...${NC}"
+    $ZIG_BIN keygen | tee ./output/keypair.txt
+    echo ""
+
+    echo -e "${YELLOW}Fingerprinting party records...${NC}"
+    cat ./output/cleansed_parties.csv | \
+        $ZIG_BIN process | \
+        tee ./output/fingerprinted_parties.txt
+else
+    echo -e "${RED}Zig binary not available — generating mock fingerprints${NC}"
+>>>>>>> 2d6a5aa629690bf00821eb5ec395123a0247b587
     perl -MDigest::SHA=sha256_hex -ne '
         next if $. == 1;
         chomp;
@@ -146,12 +203,18 @@ echo ""
 echo -e "${GREEN}${BOLD}Each language doing what it does best. That's the point.${NC}"
 echo ""
 
+<<<<<<< HEAD
 # ============================================================
 # Quick Stats
 # ============================================================
 if [ -f ./output/quality_report.json ]; then
     echo -e "${YELLOW}--- Quick Stats from Quality Report ---${NC}"
     # Use Julia or Perl to extract key stats
+=======
+# Quick Stats
+if [ -f ./output/quality_report.json ]; then
+    echo -e "${YELLOW}--- Quick Stats from Quality Report ---${NC}"
+>>>>>>> 2d6a5aa629690bf00821eb5ec395123a0247b587
     perl -MJSON -e '
         local $/;
         my $json = decode_json(<STDIN>);

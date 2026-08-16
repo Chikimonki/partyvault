@@ -29,7 +29,11 @@ println(stderr, "[JULIA/ANALYTICS] PartyVault Data Quality Analytics starting...
 CLEANSED_FILE = get(ARGS, 1, "./output/cleansed_parties.csv")
 RULES_OUTPUT  = get(ARGS, 2, "./output/rules_output.txt")  
 REPORT_FILE   = "./output/quality_report.json"
+<<<<<<< HEAD
 SUMMARY_FILE  = "./output/quality_summary.txt"
+=======
+SUMMARY_FILE  = "./output/quality_txt"
+>>>>>>> 2d6a5aa629690bf00821eb5ec395123a0247b587
 
 # ============================================================
 # Data Loading
@@ -268,7 +272,11 @@ open(REPORT_FILE, "w") do io
 end
 
 # Human-readable summary
+<<<<<<< HEAD
 summary = """
+=======
+human_summary = """
+>>>>>>> 2d6a5aa629690bf00821eb5ec395123a0247b587
 ╔══════════════════════════════════════════════════════════════╗
 ║          PartyVault Data Quality Analytics Report           ║
 ╠══════════════════════════════════════════════════════════════╣
@@ -287,10 +295,18 @@ summary = """
 
 for p in profiles
     indicator = p.completeness_pct >= 90 ? "✅" : p.completeness_pct >= 70 ? "⚠️ " : "❌"
+<<<<<<< HEAD
     summary *= "║    $indicator $(rpad(p.field_name, 25)) $(@sprintf("%5.1f%%", p.completeness_pct))  ($(p.present)/$(p.total))\n"
 end
 
 summary *= """║                                                              
+=======
+    global human_summary
+    human_summary *= "║    $indicator $(rpad(p.field_name, 25)) $(@sprintf("%5.1f%%", p.completeness_pct))  ($(p.present)/$(p.total))\n"
+end
+
+human_summary *= """║                                                              
+>>>>>>> 2d6a5aa629690bf00821eb5ec395123a0247b587
 ║  ANOMALIES:                                                  
 ║    CRITICAL: $(severity_counts["CRITICAL"])
 ║    HIGH:     $(severity_counts["HIGH"])
@@ -305,11 +321,19 @@ summary *= """║
 """
 
 open(SUMMARY_FILE, "w") do io
+<<<<<<< HEAD
     write(io, summary)
 end
 
 # Print summary to stdout
 print(summary)
+=======
+    write(io, human_summary)
+end
+
+# Print summary to stdout
+print(human_summary)
+>>>>>>> 2d6a5aa629690bf00821eb5ec395123a0247b587
 
 # Print anomalies detail to stderr for pipeline visibility
 for a in anomalies

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PartyVault Explorer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #0a0c10;
+            color: #e2e8f0;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .card {
+            background: #11181c;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid #2d3a45;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .search-area {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        input {
+            flex: 1;
+            background: #1e2a32;
+            border: 1px solid #3b4c5a;
+            color: #e2e8f0;
+            padding: 0.6rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+        }
+        input:focus {
+            outline: none;
+            border-color: #2ecc71;
+        }
+        button {
+            background: #2ecc71;
+            border: none;
+            color: #0a0c10;
+            padding: 0.6rem 1.2rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: #27ae60;
+        }
+        .quality-score {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #2ecc71;
+            margin: 0.5rem 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            text-align: left;
+            padding: 0.75rem;
+            border-bottom: 1px solid #2d3a45;
+        }
+        th {
+            background: #1e2a32;
+            font-weight: 600;
+        }
+        tr:hover {
+            background: #1a242c;
+        }
+        .risk-HIGH { color: #ff6b6b; font-weight: bold; }
+        .risk-MEDIUM { color: #f1c40f; }
+        .risk-LOW { color: #2ecc71; }
+        .trust-low { color: #ff6b6b; }
+        .trust-medium { color: #f1c40f; }
+        .trust-high { color: #2ecc71; }
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.8rem;
+            color: #6c7a89;
+        }
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .card { padding: 1rem; }
+            th, td { padding: 0.5rem; font-size: 0.85rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <h1>🔐 PartyVault Explorer</h1>
+        <div class="search-area">
+            <input type="text" id="searchInput" placeholder="Search by party name..." />
+            <button onclick="search()">Search</button>
+            <button onclick="resetSearch()" style="background:#3b4c5a;">Reset</button>
+        </div>
+        <div style="margin-top: 1rem;">
+            <div style="font-size: 1.2rem; opacity:0.8;">Data Quality Score</div>
+            <div id="qualityScore" class="quality-score">--</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>📋 Parties</h2>
+        <div style="overflow-x: auto;">
+            <table id="partiesTable">
+                <thead>
+                    <tr>
+                        <th>ID</th><th>Name</th><th>Country</th><th>Risk Class</th><th>Trust</th><th>KYC Level</th>
+                    </tr>
+                </thead>
+                <tbody id="partiesBody">
+                    <tr><td colspan="6" style="text-align:center;">Loading...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <footer>Powered by PartyVault — Cryptographic identity & compliance pipeline</footer>
+</div>
+
+<script>
+    const API_URL = 'https://partyvault-gateway-680168301963.us-central1.run.app';
+
+    async function fetchJSON(endpoint) {
+        const res = await fetch(`${API_URL}${endpoint}`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+    }
+
+    async function loadQuality() {
+        try {
+            const data = await fetchJSON('/quality');
+            document.getElementById('qualityScore').innerText = `${data.quality_score} / 100`;
+        } catch (err) {
+            console.error('Quality load error:', err);
+            document.getElementById('qualityScore').innerText = 'Error loading';
+        }
+    }
+
+    function renderParties(parties) {
+        const tbody = document.getElementById('partiesBody');
+        if (!parties.length) {
+            tbody.innerHTML = '<tr><td colspan="6">No parties found</td></tr>';
+            return;
+        }
+        tbody.innerHTML = parties.map(p => {
+            let riskClass = p.risk_class || 'UNKNOWN';
+            let riskClassClass = '';
+            if (riskClass === 'HIGH') riskClassClass = 'risk-HIGH';
+            else if (riskClass === 'MEDIUM') riskClassClass = 'risk-MEDIUM';
+            else if (riskClass === 'LOW') riskClassClass = 'risk-LOW';
+            let trustVal = p.trust || 0;
+            let trustClass = trustVal >= 80 ? 'trust-high' : (trustVal >= 50 ? 'trust-medium' : 'trust-low');
+            return `<tr>
+                <td>${escapeHtml(p.id)}</td>
+                <td>${escapeHtml(p.legal_name)}</td>
+                <td>${escapeHtml(p.country)}</td>
+                <td class="${riskClassClass}">${escapeHtml(riskClass)}</td>
+                <td class="${trustClass}">${trustVal}</td>
+                <td>${escapeHtml(p.kyc_level)}</td>
+            </tr>`;
+        }).join('');
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    async function loadParties() {
+        try {
+            const data = await fetchJSON('/parties');
+            renderParties(data);
+        } catch (err) {
+            console.error('Parties load error:', err);
+            document.getElementById('partiesBody').innerHTML = '<tr><td colspan="6">Error loading parties</td></tr>';
+        }
+    }
+
+    async function search() {
+        const name = document.getElementById('searchInput').value.trim();
+        if (!name) {
+            loadParties();
+            return;
+        }
+        try {
+            const data = await fetchJSON(`/search?name=${encodeURIComponent(name)}`);
+            renderParties(data);
+        } catch (err) {
+            console.error('Search error:', err);
+            document.getElementById('partiesBody').innerHTML = '<tr><td colspan="6">Search failed</td></tr>';
+        }
+    }
+
+    function resetSearch() {
+        document.getElementById('searchInput').value = '';
+        loadParties();
+    }
+
+    // Initial load
+    loadQuality();
+    loadParties();
+</script>
+</body>
+</html>

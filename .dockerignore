@@ -1,0 +1,7 @@
+.zig-cache
+zig/zig-out
+zig/.zig-cache
+output/
+*.txt
+README.md
+.git

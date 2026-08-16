@@ -28,7 +28,11 @@ rules.kyc_level = function(party)
     end
     
     -- Credit institutions in EU/EEA — standard due diligence
+<<<<<<< HEAD
     if party.entity_type == "CREDIT_INSTITUTION" and party.country_valid == "1" then
+=======
+        if party.entity_type == "CREDIT_INSTITUTION" and (party.country_valid == "1" or party.country_valid == "true") then
+>>>>>>> 2d6a5aa629690bf00821eb5ec395123a0247b587
         local eu_countries = {
             DE=true, FR=true, BE=true, NL=true, LU=true, IT=true, ES=true,
             PT=true, AT=true, FI=true, IE=true, GR=true, SE=true, DK=true,
@@ -72,7 +76,11 @@ rules.reporting_obligations = function(party)
     end
     
     -- LEI mandatory for all regulated entities
+<<<<<<< HEAD
     if party.lei_valid ~= "1" then
+=======
+        if party.lei_valid ~= "1" and party.lei_valid ~= "true" then
+>>>>>>> 2d6a5aa629690bf00821eb5ec395123a0247b587
         table.insert(obligations, "LEI_REQUIRED_MISSING")
     end
     
@@ -94,7 +102,11 @@ rules.risk_score = function(party)
     local factors = {}
     
     -- LEI validation
+<<<<<<< HEAD
     if party.lei_valid ~= "1" then
+=======
+        if party.lei_valid ~= "1" and party.lei_valid ~= "true" then
+>>>>>>> 2d6a5aa629690bf00821eb5ec395123a0247b587
         score = score + 30
         table.insert(factors, "NO_VALID_LEI(+30)")
     end
@@ -266,6 +278,7 @@ io.stderr:write(string.format(
     processed, high_risk_count
 ))
 io.stderr:write("[LUAJIT/RULES] Rule engine complete.\n")
+<<<<<<< HEAD
 
 -- Fleet integration (added for distributed identity)
 local Fleet = require("fleet")
@@ -274,3 +287,5 @@ local Fleet = require("fleet")
 function verify_across_fleet(party_name, party_lei)
     return Fleet.verify_party(party_name, party_lei)
 end
+=======
+>>>>>>> 2d6a5aa629690bf00821eb5ec395123a0247b587
