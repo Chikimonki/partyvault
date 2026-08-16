@@ -289,3 +289,11 @@ function verify_across_fleet(party_name, party_lei)
 end
 =======
 >>>>>>> 2d6a5aa629690bf00821eb5ec395123a0247b587
+
+-- ML-enhanced trust scoring (added 2026)
+local MLTrustScore = require("ml_trust_score")
+
+-- Override the old trust score with ML version
+function ml_calculate_trust(party)
+    return MLTrustScore.calculate(party)
+end
