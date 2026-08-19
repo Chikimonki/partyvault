@@ -130,6 +130,15 @@ fi
 
 echo ""
 echo -e "${GREEN}✓ Cryptographic fingerprinting complete${NC}"
+
+# Julia analytics step (if Julia available)
+if command -v julia &>/dev/null; then
+    echo -e "${CYAN}━━━ Phase 3: Julia Quality Analytics ━━━${NC}"
+    julia julia/analytics.jl ./output/fingerprinted_parties.txt ./output/quality_report.json
+    echo -e "${GREEN}✓ Julia analytics complete${NC}"
+else
+    echo -e "${YELLOW}Julia not available — skipping analytics${NC}"
+fi
 echo ""
 
 # =====================================================# Phase 3: LuaJIT Business Rule Engine
