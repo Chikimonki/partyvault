@@ -1,26 +1,26 @@
-🔐 PartyVault — Cryptographic Party Identity Service
-<<<<<<< HEAD
-Version 6.0 · MIT Licensed · Open Source · Production-honest, not production-hardened.
+## 🔐 PartyVault — Cryptographic Party Identity Service
+
+Version 8.0 · MIT Licensed · Open Source · Production-honest, not production-hardened.
 
 Cryptographic identity management for financial market infrastructure: a polyglot pipeline where each layer runs in the language best suited to it — Perl (cleansing) → Zig (crypto) → LuaJIT (rules & ML) → Julia (analytics).
 
-Videos: 1 · 2
+## Video: https://youtu.be/Mwwx0ZaDxzs
 
-Why This Exists
-On 16 March 2026, Euroclear and Clearstream digitised the €15 trillion Eurobond market (Clearstream newsroom, 16.03.2026). Millions of parties — issuers, investors, agents, custodians — now require cryptographically verifiable digital identities, real-time KYC classification, and automated regulatory compliance.
+On 16 March 2026, Euroclear and Clearstream digitised the €15 trillion Eurobond market ([Clearstream newsroom, 16.03.2026](https://www.clearstream.com/clearstream-en/newsroom/260316-5012146)), ([Euroeclear newsroom, 16.03.2026](https://www.euroclear.com/newsandinsights/en/press/2026/mr-10-euroclear-clearstream-digitise-eurobond-issuance.html).). Millions of parties — issuers, investors, agents, custodians — now require cryptographically verifiable digital identities, real-time KYC classification, and automated regulatory compliance.
 
-Enterprise MDM platforms typically take 6–12 months to implement for this scale. PartyVault's first working prototype was built in 24 hours to demonstrate what is possible when each layer uses the right tool instead of forcing everything into one stack.
+"The launch of our dematerialised issuance service marks a pivotal moment for the Eurobond market." -  Isabelle Delorme, Head of Product Strategy and Innovation, Euroclear
 
-Verification Status
+## Verification Status
+
 18 PASS / 0 FAIL / 1 KNOWN-FAIL — archive-ready verification suite.
 =======
 
-**Version 6.0** · MIT Licensed · Open Source · Production-honest, not production-hardened.
+**Version 8.0** · MIT Licensed · Open Source · Production-honest, not production-hardened.
 
 Cryptographic identity management for financial market infrastructure: a polyglot pipeline where each layer runs in the language best suited to it — Perl (cleansing) → Zig (crypto) → LuaJIT (rules & ML) → Julia (analytics).
 
-**Videos**: [1](https://youtu.be/3KLy4c-r-w8) · [2](https://youtu.be/tlr9CJlRpjU)
->>>>>>> c9c09ed2d57eff87c885322828e09c01250cee80
+**Videos**: [Party Vault v6.0]([https://youtu.be/Mwwx0ZaDxzs)
+
 
 Category	Count
 Passing tests	18
@@ -33,10 +33,9 @@ Data ingestion & cleansing	Perl	Multi-format parsing, regex normalisation, LEI v
 Cryptographic identity	Zig	BLAKE3 fingerprinting, Ed25519 attestation, zero-GC deterministic processing
 Regulatory classification	LuaJIT	Hot-swappable business rules, KYC classification, ML trust scores
 Quality analytics	Julia	Statistical profiling, anomaly detection, completeness analysis
-Pipeline
-text
 
-<<<<<<< HEAD
+Pipeline
+
 CSV/JSON parties
    │  Perl: parse → cleanse → validate LEI → deduplicate
    ▼
@@ -71,29 +70,19 @@ chmod +x setup.sh run_demo.sh
 ./run_demo.sh
 ## Roadmap
 
-**v6.1 (next)**
-- Persistent Ed25519 keystore (fixes T06)
-- Sign/verify round-trip with tamper-must-fail test (T08)
-- Held-out ML evaluation (T14)
+**v8.1 (next)**
+- Persistent Ed25519 keystore (fixes T06 — final KNOWN-FAIL)
+- Julia analytics wired to pipeline output
+- Sign/verify round-trip integrated into CI
 
-**v7.0**
-- REST API (OpenResty + LuaJIT)
-- Live GLEIF LEI lookup (optional online mode)
-- EU Consolidated Sanctions List screening
-- SQLite persistent storage
-
-**v8.0**
-- eIDAS 2.0 verifiable credential issuance
-- Real-time change detection, webhook notifications
-- PostgreSQL backend option
+**v9.0**
+- Multi-tenant production deployment
+- Docker Compose orchestration
+- eIDAS 2.0 production certificates
+- SOC 2 Type II audit preparation
 =======
-On 16 March 2026, Euroclear and Clearstream digitised the €15 trillion Eurobond market ([Clearstream newsroom, 16.03.2026](https://www.clearstream.com/clearstream-en/newsroom/260316-5012146)), ([Euroeclear newsroom, 16.03.2026](https://www.euroclear.com/newsandinsights/en/press/2026/mr-10-euroclear-clearstream-digitise-eurobond-issuance.html).). Millions of parties — issuers, investors, agents, custodians — now require cryptographically verifiable digital identities, real-time KYC classification, and automated regulatory compliance.
 
-"The launch of our dematerialised issuance service marks a pivotal moment for the Eurobond market." -  Isabelle Delorme, Head of Product Strategy and Innovation, Euroclear
-
-Enterprise MDM platforms typically take 6–12 months to implement for this scale. PartyVault's first working prototype was built in 24 hours to demonstrate what is possible when each layer uses the right tool instead of forcing everything into one stack.
-
-## Verification Status
+## Status
 
 **18 PASS / 0 FAIL / 1 KNOWN-FAIL** — archive-ready verification suite.
 
@@ -128,8 +117,6 @@ risk classifications
 ▼
 quality report
 
-text
-
 ## Trust Model
 
 **Stage 1 — Identity trust (Zig, rule-based).** Valid LEI + valid country + acceptable entity type ⇒ high trust. Degraded by shell-company indicators, missing LEI, suspended status.
@@ -150,13 +137,11 @@ bash
 chmod +x setup.sh run_demo.sh
 ./setup.sh
 ./run_demo.sh
->>>>>>> c9c09ed2d57eff87c885322828e09c01250cee80
 
 Known Limitations
 Documented, not hidden:
 
 Key persistence — demo generates a fresh Ed25519 keypair per run. Persistent keystore required for verifiable attestation chains.
-<<<<<<< HEAD
 ML training set — small label set; scores are decision-support, not authoritative KYC verdicts.
 Sign/verify round-trip — not yet wired to a tamper-must-fail test.
 Field escaping — pipe/newline escaping for party names in progress.
@@ -168,14 +153,11 @@ Sign/verify round-trip — not yet wired to a tamper-must-fail test.
 
 Field escaping — pipe/newline escaping for party names in progress.
 
->>>>>>> c9c09ed2d57eff87c885322828e09c01250cee80
 Regulatory Relevance
 PartyVault's verified party register and attestation chain align with the direction of travel in financial regulation — KYC/AML evidence automation, and the register-of-information discipline familiar from DORA Article 28 for ICT third parties. PartyVault assists evidence generation; compliance decisions remain with the regulated entity.
 
 License & Provenance
 MIT. Built on open standards: ISO 17442 (LEI), Ed25519 (RFC 8032), BLAKE3.
-<<<<<<< HEAD
 
 Built in Liverpool. Open source. Audit-ready verification.
 =======
->>>>>>> c9c09ed2d57eff87c885322828e09c01250cee80
