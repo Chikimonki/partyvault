@@ -114,7 +114,7 @@ fn processPartyLine(
     line_num: usize,
 ) !void {
     // Simple CSV parsing (doesn't handle quoted commas perfectly, but works for demo)
-    var fields: [10][]const u8 = undefined;
+    var fields: [14][]const u8 = undefined;
     var field_count: usize = 0;
     var start: usize = 0;
     var in_quotes = false;
@@ -123,7 +123,7 @@ fn processPartyLine(
         if (c == '"') {
             in_quotes = !in_quotes;
         } else if (c == ',' and !in_quotes) {
-            if (field_count < 10) {
+            if (field_count < 14) {
                 fields[field_count] = line[start..i];
                 field_count += 1;
             }
@@ -131,7 +131,7 @@ fn processPartyLine(
         }
     }
     // Last field
-    if (field_count < 10) {
+    if (field_count < 14) {
         fields[field_count] = line[start..];
         field_count += 1;
     }
@@ -161,9 +161,10 @@ fn processPartyLine(
     // Calculate trust score
     const trust_score = calculateTrustScore(legal_name, country, lei, entity_type, status);
 
-    // LEI validation
-    const lei_valid = validateLEI(lei);
-    const country_valid = validateCountryCode(country);
+    // LEI validation — use Perl's verdict from the cleansed CSV (field 11)
+    // fields[10] = lei_valid (1 or 0), fields[11] = lei_status
+    const lei_valid = if (field_count > 10) std.mem.eql(u8, fields[10], "1") else validateLEI(lei);
+    const country_valid = if (field_count > 13) std.mem.eql(u8, fields[13], "1") else validateCountryCode(country);
 
     // Output as pipe-delimited record
     try stdout.print(
@@ -228,17 +229,17 @@ pub fn main() !void {
             if (record.len == 0) continue;
 
             // Simple CSV parsing (assumes no quoted commas)
-            var fields: [10][]const u8 = .{""} ** 10;
+            var fields: [14][]const u8 = .{""} ** 14;
             var field_count: usize = 0;
             var start: usize = 0;
             for (record, 0..) |c, i| {
-                if (c == ',' and field_count < 10) {
+                if (c == ',' and field_count < 14) {
                     fields[field_count] = record[start..i];
                     field_count += 1;
                     start = i + 1;
                 }
             }
-            if (field_count < 10) {
+            if (field_count < 14) {
                 fields[field_count] = record[start..];
                 field_count += 1;
             }

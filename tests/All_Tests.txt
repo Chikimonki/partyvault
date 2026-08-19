@@ -1,0 +1,399 @@
+/mnt/d/AGame/Jobs/clear_fin/partyvault/tests
+
+./partyvault_tests_v6.0.sh   Test 4: The Complete Workflow (What It All Means)
+
+print("""
+=== PARTYVAULT: WHAT IT DOES, HOW IT WORKS, WHY ===
+
+WHAT IT DOES:
+1. Ingests party data (Perl) — parses CSV/JSON, cleanses, deduplicates
+2. Fingerprints identities (Zig) — BLAKE3 hash, Ed25519 attestation
+3. Classifies risk (LuaJIT) — KYC rules, ML trust scores
+4. Analyses quality (Julia) — completeness, anomalies
+5. Distributes verification (Fleet) — Headscale mesh
+
+HOW IT WORKS:
+- Pipeline: Perl → Zig → LuaJIT → Julia
+- Each language does what it does best
+- ML trust scoring learns from labelled examples
+- Fleet shares verifications across institutions
+- Air-gapped: no cloud, no API keys
+
+WHY IT MATTERS:
+- March 2025: Euroclear digitised €15T Eurobond market
+- Millions of parties need verifiable digital identities
+- Enterprise MDM takes 6-12 months; PartyVault did it in 24 hours
+- Open source: anyone can inspect, verify, improve
+- MIT licensed: no vendor lock-in
+
+THE KEY INSIGHT:
+- Good parties (Deutsche Bank) get trust=100
+- Bad parties (FTX) get trust=60 or lower
+- ML learns from examples to improve accuracy
+- Fleet ensures all institutions see the same verification
+""")
+
+
+./partyvault_tests_v5.0.sh     Test 3: Fleet Deep Dive
+
+package.path = "./lua/?.lua;" .. package.path
+local Fleet = require("fleet")
+
+print("=== FLEET DEEP DIVE ===\n")
+
+-- Register financial institutions
+local institutions = {
+    {name = "Clearstream", lei = "5299000J2N45DDNE4Y28"},
+    {name = "Euroclear", lei = "549300OZ46M7KZ8I6D96"},
+    {name = "BNY Mellon", lei = "549300HY8H0Z7V7E8H44"},
+    {name = "Deutsche Bank", lei = "7LTWFZYICNSX8D621K86"},
+    {name = "Goldman Sachs", lei = "W22LROWP2IHZNBB6K528"},
+}
+
+for _, inst in ipairs(institutions) do
+    Fleet.register_node(inst.name, inst.lei)
+end
+
+print("Fleet nodes registered:\n")
+local status = Fleet.status()
+print(string.format("  Total nodes: %d", status.total_nodes))
+print(string.format("  Air-gapped: %s", status.air_gapped))
+print()
+
+-- Verify a party across the fleet
+print("Verifying 'Acme Corp' across all 5 institutions:\n")
+local results = Fleet.verify_party("Acme Corp", "529900TEST")
+for node, result in pairs(results) do
+    print(string.format("  %-20s: %s", node, result.verified and "VERIFIED" or "FAILED"))
+end
+print()
+
+-- Broadcast KYC update
+print("Broadcasting KYC status 'HIGH_RISK' for Acme Corp:\n")
+local broadcast = Fleet.broadcast_kyc("Acme Corp", "HIGH_RISK")
+print(string.format("  Broadcast to %d nodes", broadcast.nodes_updated))
+print()
+
+-- Final fleet status
+local final_status = Fleet.status()
+print("Final fleet status:")
+print(string.format("  Nodes: %d", final_status.total_nodes))
+print(string.format("  Mode: %s", final_status.air_gapped and "AIR-GAPPED (no cloud)" or "CONNECTED"))
+
+
+
+./partyvault_tests_v4.0.sh       Test 2: ML Trust Score Deep Dive
+
+package.path = "./lua/?.lua;" .. package.path
+local MLTrustScore = require("ml_trust_score")
+
+print("=== ML TRUST SCORE DEEP DIVE ===\n")
+
+-- Test every party type
+local parties = {
+    {name = "Deutsche Bank", lei_valid = true, lei_status = "OK", country = "DE", entity_type = "CREDIT_INSTITUTION", status = "ACTIVE", email_valid = true},
+    {name = "BNP Paribas", lei_valid = true, lei_status = "OK", country = "FR", entity_type = "CREDIT_INSTITUTION", status = "ACTIVE", email_valid = true},
+    {name = "Goldman Sachs", lei_valid = true, lei_status = "OK", country = "GB", entity_type = "CREDIT_INSTITUTION", status = "ACTIVE", email_valid = true},
+    {name = "Acme Capital", lei_valid = false, country = "", entity_type = "INVESTMENT_FIRM", status = "ACTIVE"},
+    {name = "Shady Offshore", lei_valid = false, country = "KY", entity_type = "SHELL_COMPANY", status = "ACTIVE"},
+    {name = "FTX Trading", lei_valid = false, country = "BS", entity_type = "EXCHANGE", status = "SUSPENDED"},
+    {name = "Clearstream", lei_valid = true, lei_status = "CHECKSUM_FAIL", country = "LU", entity_type = "CSD", status = "ACTIVE", email_valid = true},
+}
+
+print("Trust scores before training:\n")
+for _, party in ipairs(parties) do
+    local score = MLTrustScore.calculate(party)
+    print(string.format("  %-25s: %3d", party.name, score))
+end
+
+-- Train with labelled examples
+print("\nTraining with 5 labelled examples...\n")
+local examples = {
+    {party = parties[1], actual_trust = 95},  -- Deutsche Bank: excellent
+    {party = parties[2], actual_trust = 92},  -- BNP Paribas: excellent
+    {party = parties[3], actual_trust = 90},  -- Goldman Sachs: excellent
+    {party = parties[5], actual_trust = 5},   -- Shady Offshore: terrible
+    {party = parties[6], actual_trust = 3},   -- FTX: catastrophic
+}
+
+local total_error = MLTrustScore.train(examples)
+print(string.format("Average training error: %.2f\n", total_error))
+
+print("Trust scores after training:\n")
+for _, party in ipairs(parties) do
+    local score = MLTrustScore.calculate(party)
+    print(string.format("  %-25s: %3d", party.name, score))
+end
+
+-- Feature importance
+print("\nFeature weights (what the ML considers important):")
+for feature, weight in pairs(MLTrustScore.feature_importance()) do
+    print(string.format("  %-30s: %d", feature, weight))
+end
+
+
+
+
+./partyvault_tests_v3.0.sh       Test 1: The Full Pipeline (All Layers)
+
+cd /mnt/d/AGame/Jobs/clear_fin/partyvault
+
+echo "=== PARTYVAULT COMPLETE PIPELINE TEST ===\n"
+
+# Run the full demo
+./run_demo.sh 2>&1 | tail -60
+
+
+
+./partyvault_tests_v2.0.sh        
+
+
+#!/usr/bin/env bash
+# ============================================================================
+# PartyVault verification suite — run from the partyvault repo root:
+#     ./tests/partyvault_tests.sh
+#
+# Convention: PASS / FAIL / KNOWN-FAIL. KNOWN-FAIL pins a documented defect
+# until the fix lands — flip the expectation when fixed. Exit code:
+# 0 if no UNEXPECTED failures, 1 otherwise.
+# ============================================================================
+set -u
+cd "$(dirname "$0")/.." || exit 1
+
+PASS=0; FAIL=0; KNOWNFAIL=0
+ok()    { echo "  PASS  $1"; PASS=$((PASS+1)); }
+bad()   { echo "  FAIL  $1"; FAIL=$((FAIL+1)); }
+known() { echo "  KNOWN-FAIL  $1  (documented defect — flip when fixed)"; KNOWNFAIL=$((KNOWNFAIL+1)); }
+check() { # check <description> <command...>
+  local desc="$1"; shift
+  if "$@" >/dev/null 2>&1; then ok "$desc"; else bad "$desc"; fi
+}
+
+CLEANSED=./output/cleansed_parties.csv
+REPORT=./output/ingestion_report.txt
+IDENTITIES=./output/identities.txt
+
+echo "=== PartyVault Verification Suite ==="
+echo
+
+# --- T01: pipeline artifacts exist ---
+echo "[T01] Pipeline artifacts"
+check "cleansed CSV exists"        test -f "$CLEANSED"
+check "ingestion report exists"    test -f "$REPORT"
+if [ -f "$IDENTITIES" ]; then ok "identities file exists"; fi
+
+# --- T02: pinned ingestion counts ---
+echo "[T02] Ingestion counts (pinned fixture: 12 records)"
+check "Valid: 11"      grep -q "Valid Records:       11" "$REPORT"
+check "Rejected: 1"    grep -q "Rejected Records:     1"  "$REPORT"
+check "Duplicates: 1"  grep -q "Duplicates Found:     1"  "$REPORT"
+check "P007 rejected as empty" grep -q "P007: REJECTED" "$REPORT"
+
+# --- T03: data quality score arithmetic ---
+echo "[T03] Quality score integrity"
+if grep -q "Data Quality Score:  91.7%" "$REPORT"; then
+  ok "score 91.7% == 11 valid / 12 total"
+else bad "score does not match 11/12 = 91.7%"; fi
+
+# --- T04: LEI validation oracle rows ---
+echo "[T04] LEI oracle (pinned per-record verdicts)"
+check "P001 Deutsche Bank LEI OK"            grep "^P001," "$CLEANSED" | grep -q ",1,OK,"
+check "P003 invalid format detected"         grep "^P003," "$CLEANSED" | grep -q "INVALID_FORMAT"
+check "P005 missing LEI detected"            grep "^P005," "$CLEANSED" | grep -q "MISSING"
+check "P009 checksum failure detected"       grep "^P009," "$CLEANSED" | grep -q "CHECKSUM_FAIL"
+check "P011 checksum failure detected"       grep "^P011," "$CLEANSED" | grep -q "CHECKSUM_FAIL"
+check "P012 Goldman LEI OK"                  grep "^P012," "$CLEANSED" | grep -q ",1,OK,"
+
+# --- T05: cross-layer consistency (KNOWN DEFECT) ---
+echo "[T05] Cross-layer consistency: ingestion verdicts must reach the crypto layer"
+if [ -f "$IDENTITIES" ]; then
+  if grep "^IDENTITY|P009|" "$IDENTITIES" | grep -q "lei_valid=true|trust=100" ||
+     grep "^IDENTITY|P011|" "$IDENTITIES" | grep -q "lei_valid=true|trust=100"; then
+    known "P009/P011 checksum-failed LEIs attested as lei_valid=true/trust=100"
+  else
+    ok "checksum-failed LEIs no longer attested at full trust"
+  fi
+else echo "  SKIP  identities file not found"; fi
+
+# --- T06: key persistence (KNOWN DEFECT) ---
+echo "[T06] Attestation key persistence"
+PUB1=$(./run_demo.sh 2>/dev/null | grep -o "public=[0-9a-f]*" | head -1)
+PUB2=$(./run_demo.sh 2>/dev/null | grep -o "public=[0-9a-f]*" | head -1)
+if [ -z "$PUB1" ] || [ -z "$PUB2" ]; then
+  echo "  SKIP  could not capture public keys from run_demo output"
+elif [ "$PUB1" = "$PUB2" ]; then
+  ok "public key stable across runs (attestation chain possible)"
+else
+  known "keypair regenerated each run — attestations unverifiable across runs"
+fi
+
+# --- T07: secret redaction ---
+echo "[
+
+
+partyvault_tests.sh       Arena ai's version
+
+
+#!/usr/bin/env bash
+# ============================================================================
+# PartyVault verification suite — run from the partyvault repo root:
+#     ./tests/partyvault_tests.sh
+#
+# Convention: PASS / FAIL / KNOWN-FAIL. KNOWN-FAIL pins a documented defect
+# until the fix lands — flip the expectation when fixed. Exit code:
+# 0 if no UNEXPECTED failures, 1 otherwise.
+# ============================================================================
+set -u
+cd "$(dirname "$0")/.." || exit 1
+
+PASS=0; FAIL=0; KNOWNFAIL=0
+ok()    { echo "  PASS  $1"; PASS=$((PASS+1)); }
+bad()   { echo "  FAIL  $1"; FAIL=$((FAIL+1)); }
+known() { echo "  KNOWN-FAIL  $1  (documented defect — flip when fixed)"; KNOWNFAIL=$((KNOWNFAIL+1)); }
+check() { # check <description> <command...>
+  local desc="$1"; shift
+  if "$@" >/dev/null 2>&1; then ok "$desc"; else bad "$desc"; fi
+}
+
+CLEANSED=./output/cleansed_parties.csv
+REPORT=./output/ingestion_report.txt
+IDENTITIES=./output/identities.txt      # ADAPT if your IDENTITY output path differs
+KEYS=./output/keys                      # ADAPT to wherever key material is stored
+
+echo "=== PartyVault Verification Suite ==="
+echo
+
+# --- T01: pipeline artifacts exist ------------------------------------------
+echo "[T01] Pipeline artifacts"
+check "cleansed CSV exists"        test -f "$CLEANSED"
+check "ingestion report exists"    test -f "$REPORT"
+if [ -f "$IDENTITIES" ]; then ok "identities file exists"; else
+  echo "  NOTE  $IDENTITIES not found — ADAPT path at top of this script"
+fi
+
+# --- T02: pinned ingestion counts (sample fixture) ---------------------------
+echo "[T02] Ingestion counts (pinned fixture: 12 records)"
+check "Valid: 11"      grep -q "Valid Records:       11" "$REPORT"
+check "Rejected: 1"    grep -q "Rejected Records:     1"  "$REPORT"
+check "Duplicates: 1"  grep -q "Duplicates Found:     1"  "$REPORT"
+check "P007 rejected as empty" grep -q "P007: REJECTED" "$REPORT"
+
+# --- T03: data quality score arithmetic --------------------------------------
+echo "[T03] Quality score integrity"
+if grep -q "Data Quality Score:  91.7%" "$REPORT"; then
+  ok "score 91.7% == 11 valid / 12 total"
+else bad "score does not match 11/12 = 91.7%"; fi
+
+# --- T04: LEI validation oracle rows -----------------------------------------
+echo "[T04] LEI oracle (pinned per-record verdicts)"
+check "P001 Deutsche Bank LEI OK"            grep "^P001," "$CLEANSED" | grep -q ",1,OK,"
+check "P003 invalid format detected"         grep "^P003," "$CLEANSED" | grep -q "INVALID_FORMAT"
+check "P005 missing LEI detected"            grep "^P005," "$CLEANSED" | grep -q "MISSING"
+check "P009 checksum failure detected"       grep "^P009," "$CLEANSED" | grep -q "CHECKSUM_FAIL"
+check "P011 checksum failure detected"       grep "^P011," "$CLEANSED" | grep -q "CHECKSUM_FAIL"
+check "P012 Goldman LEI OK"                  grep "^P012," "$CLEANSED" | grep -q ",1,OK,"
+
+# --- T05: cross-layer consistency (KNOWN DEFECT) ------------------------------
+echo "[T05] Cross-layer consistency: ingestion verdicts must reach the crypto layer"
+if [ -f "$IDENTITIES" ]; then
+  if grep "^IDENTITY|P009|" "$IDENTITIES" | grep -q "lei_valid=true|trust=100" ||
+     grep "^IDENTITY|P011|" "$IDENTITIES" | grep -q "lei_valid=true|trust=100"; then
+    known "P009/P011 checksum-failed LEIs attested as lei_valid=true/trust=100"
+  else
+    ok "checksum-failed LEIs no longer attested at full trust"
+  fi
+else echo "  SKIP  identities file not found"; fi
+
+# --- T06: key persistence (KNOWN DEFECT) --------------------------------------
+echo "[T06] Attestation key persistence"
+PUB1=$(./run_demo.sh 2>/dev/null | grep -o "public=[0-9a-f]*" | head -1)
+PUB2=$(./run_demo.sh 2>/dev/null | grep -o "public=[0-9a-f]*" | head -1)
+if [ -z "$PUB1" ] || [ -z "$PUB2" ]; then
+  echo "  SKIP  could not capture public keys from run_demo output"
+elif [ "$PUB1" = "$PUB2" ]; then
+  ok "public key stable across runs (attestation chain possible)"
+else
+  known "keypair regenerated each run — attestations unverifiable across runs"
+fi
+
+# --- T07: secret redaction -----------------------------------------------------
+echo "[T07] Secret-key hygiene"
+SECRET=$(./run_demo.sh 2>/dev/null | grep -o "secret=[0-9a-f]\{20,\}" | head -1 | cut -d= -f2)
+if [ -n "$SECRET" ] && grep -rq "$SECRET" ./output/ 2>/dev/null; then
+  bad "secret key material found in output artifacts"
+else
+  ok "no secret key material in output artifacts"
+fi
+check "logs redact secret" bash -c "./run_demo.sh 2>&1 | grep -q 'secret=REDACTED'"
+
+# --- T08: signature round-trip (ADAPT) ----------------------------------------
+echo "[T08] Sign/verify round-trip"
+echo "  ADAPT  wire to your Zig verify entry point:"
+echo "         sign fingerprint -> verify OK -> tamper -> verify MUST fail"
+
+# --- T09: Unicode integrity -----------------------------------------------------
+echo "[T09] Unicode integrity"
+check "Müller survives cleansing byte-for-byte" grep -q "Jean-Pierre Müller & Associés" "$CLEANSED"
+
+# --- T10: deduplication integrity ------------------------------------------------
+echo "[T10] Dedup integrity"
+K1=$(grep "^P001," "$CLEANSED" | cut -d, -f15)
+K4=$(grep "^P004," "$CLEANSED" | cut -d, -f15)
+if [ -n "$K1" ] && [ "$K1" = "$K4" ]; then
+  ok "P001/P004 share dedup_key ($K1)"
+else bad "P001/P004 dedup keys differ ($K1 vs $K4)"; fi
+check "P004 marked DUPLICATE of P001" grep "^P004," "$CLEANSED" | grep -q "DUPLICATE:matches_P001"
+
+# --- T11: pipe-injection resistance (KNOWN DEFECT UNTIL ESCAPING LANDS) ---------
+echo "[T11] Field-injection resistance"
+TMPFIX=$(mktemp); TMPOUT=$(mktemp)
+printf 'id,legal_name,country,lei\nP900,Evil|Corp\\nINJECTED|LINE,,\n' > "$TMPFIX"
+# ADAPT: point your ingestion at $TMPFIX; here we test the format contract:
+if grep "^IDENTITY|" "$IDENTITIES" 2>/dev/null | awk -F'|' '{print NF}' | sort -u | wc -l | grep -q "^1$"; then
+  ok "IDENTITY rows have uniform field counts (no injection visible)"
+else
+  known "IDENTITY field counts vary — pipe/newline escaping needed in party fields"
+fi
+rm -f "$TMPFIX" "$TMPOUT"
+
+# --- T12/T13: ML determinism and bounds -----------------------------------------
+echo "[T12/T13] ML trust scoring"
+ML_SNIPPET='
+package.path = "./lua/?.lua;" .. package.path
+local M = require("ml_trust_score")
+local p = {name="Test Bank", lei_valid=true, lei_status="OK", country="DE",
+           entity_type="CREDIT_INSTITUTION", status="ACTIVE", email_valid=true}
+local ex = {{party=p, actual_trust=95},
+            {party={name="Bad", lei_valid=false, country="KY",
+                    entity_type="SHELL_COMPANY", status="ACTIVE"}, actual_trust=5}}
+M.train(ex)
+local s1 = M.calculate(p); M.train(ex); local s2 = M.calculate(p)
+print(s1 .. " " .. s2)'
+R=$(luajit -e "$ML_SNIPPET" 2>/dev/null)
+if [ -n "$R" ]; then
+  S1=${R%% *}; S2=${R##* }
+  if [ "$S1" = "$S2" ]; then ok "deterministic: same training -> same score ($S1)";
+  else bad "non-deterministic scores: $S1 vs $S2"; fi
+  if [ "$S1" -ge 0 ] 2>/dev/null && [ "$S1" -le 100 ] 2>/dev/null; then
+    ok "score within [0,100]"; else bad "score out of bounds: $S1"; fi
+else echo "  SKIP  ml_trust_score not reachable via luajit (ADAPT path)"; fi
+
+# --- T14: ML learning signal ------------------------------------------------------
+echo "[T14] ML learning signal (post-training error < naive baseline)"
+echo "  ADAPT  assert avg training error decreases over epochs and report"
+echo "         a HELD-OUT error (current runs report training-set error only)"
+
+# --- T15: Julia stage presence ------------------------------------------------------
+echo "[T15] Julia analytics stage"
+echo "  ADAPT  assert the Julia quality artifact exists (path here), or remove"
+echo "         the Julia claim from the README until wired"
+
+# --- T16: README hygiene --------------------------------------------------------------
+echo "[T16] README hygiene"
+HEADINGS=$(grep -c "^## Roadmap" README.md 2>/dev/null || echo 0)
+if [ "$HEADINGS" = "1" ]; then ok "single Roadmap heading"; else bad "duplicate Roadmap headings ($HEADINGS)"; fi
+check "Euroclear date matches citation (2026)" grep -q "16 March 2026" README.md
+
+echo
+echo "=== Summary: PASS=$PASS  FAIL=$FAIL  KNOWN-FAIL=$KNOWNFAIL ==="
+[ "$FAIL" -eq 0 ] && exit 0 || exit 1

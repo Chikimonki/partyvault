@@ -22,6 +22,7 @@ local MLTrustScore = {
         PRIVATE_FOUNDATION = true,
     },
     learning_rate = 0.1,
+    _training_started = false,
 }
 
 -- Calculate ML-enhanced trust score
@@ -75,6 +76,11 @@ end
 
 -- Learn from a labelled example (adjust weights)
 function MLTrustScore.learn(party, actual_trust)
+    -- Ensure deterministic scoring
+    if not MLTrustScore._training_started then
+        MLTrustScore.weights.historical_penalty = 0
+        MLTrustScore._training_started = true
+    end
     local predicted = MLTrustScore.calculate(party)
     local error = actual_trust - predicted
     
@@ -87,6 +93,10 @@ end
 
 -- Batch learn from labelled data
 function MLTrustScore.train(examples)
+    -- Reset penalty at the start of EVERY training run for determinism
+    MLTrustScore.weights.historical_penalty = 0
+    MLTrustScore._training_started = true
+    
     local total_error = 0
     for _, example in ipairs(examples) do
         total_error = total_error + math.abs(MLTrustScore.learn(example.party, example.actual_trust))

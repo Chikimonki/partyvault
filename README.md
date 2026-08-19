@@ -18,7 +18,7 @@ Videos:
 
 ## Why This Exists
 
-On March 16, 2025, Euroclear and Clearstream digitized the €15 trillion Eurobond market. 
+On 16 March 2026, Euroclear and Clearstream digitized the €15 trillion Eurobond market. 
 That means millions of parties (issuers, investors, agents, custodians) now need cryptographically 
 verifiable digital identities, real-time KYC classification, and automated regulatory compliance.
 
@@ -47,7 +47,7 @@ If your team has a hard problem that requires unconventional thinking, [let's ta
 
 ## Why This Stack?
 
-In a world where a €15T+ Eurobond market just went digital (March 2025), 
+In a world where a €15T+ Eurobond market just went digital (16 March 2026), 
 party identity infrastructure must be:
 
 - **Fast** — Zig and LuaJIT deliver near-C performance without GC pauses
@@ -61,7 +61,6 @@ party identity infrastructure must be:
 
 https://www.clearstream.com/clearstream-en/newsroom/260316-5012146 - "Clearstream and Euroclear Digitize Eurobond Issuance Revolutionizing the Market - by TABEA BEHR, 16.03.2026"
 
-## Roadmap
 
 ### v0.2 (Q2 2025)
 - [ ] REST API (OpenResty + LuaJIT)
