@@ -3,9 +3,9 @@ Version 6.0 · MIT Licensed · Open Source · Production-honest, not production-
 
 Cryptographic identity management for financial market infrastructure: a polyglot pipeline where each layer runs in the language best suited to it — Perl (cleansing) → Zig (crypto) → LuaJIT (rules & ML) → Julia (analytics).
 
-Videos: 1 · 2
+Videos: to follow
 
-Why This Exists
+Why This Exists: https://www.euroclear.com/newsandinsights/en/press/2026/mr-10-euroclear-clearstream-digitise-eurobond-issuance.html
 On 16 March 2026, Euroclear and Clearstream digitised the €15 trillion Eurobond market (Clearstream newsroom, 16.03.2026). Millions of parties — issuers, investors, agents, custodians — now require cryptographically verifiable digital identities, real-time KYC classification, and automated regulatory compliance.
 
 Enterprise MDM platforms typically take 6–12 months to implement for this scale. PartyVault's first working prototype was built in 24 hours to demonstrate what is possible when each layer uses the right tool instead of forcing everything into one stack.
@@ -51,22 +51,31 @@ Verification
 Bash
 
 ./tests/partyvault_tests.sh
+
 The suite runs 16 checks: pinned ingestion counts, LEI oracle rows, cross-layer consistency, key persistence (documented defect), secret redaction, Unicode integrity, deduplication, injection resistance, ML determinism and bounds, and README hygiene.
 
 Quick Start
 Bash
 
 chmod +x setup.sh run_demo.sh
+
 ./setup.sh
+
 ./run_demo.sh
+
 Known Limitations
 Documented, not hidden:
 
-Key persistence — demo generates a fresh Ed25519 keypair per run. Persistent keystore required for verifiable attestation chains.
-ML training set — small label set; scores are decision-support, not authoritative KYC verdicts.
-Sign/verify round-trip — not yet wired to a tamper-must-fail test.
-Field escaping — pipe/newline escaping for party names in progress.
-Regulatory Relevance
+- Key persistence — demo generates a fresh Ed25519 keypair per run. Persistent keystore required for verifiable attestation chains.
+
+- ML training set — small label set; scores are decision-support, not authoritative KYC verdicts.
+
+- Sign/verify round-trip — not yet wired to a tamper-must-fail test.
+  
+- Field escaping — pipe/newline escaping for party names in progress.
+  
+Regulatory Relevance:
+
 PartyVault's verified party register and attestation chain align with the direction of travel in financial regulation — KYC/AML evidence automation, and the register-of-information discipline familiar from DORA Article 28 for ICT third parties. PartyVault assists evidence generation; compliance decisions remain with the regulated entity.
 
 License & Provenance
