@@ -25,7 +25,9 @@ verifiable digital identities, real-time KYC classification, and automated regul
 **Enterprise MDM platforms (Informatica, Reltio, IBM InfoSphere) take 6-12 months to implement 
 for a use case like this.**
 
-**I built a working prototype in one day** to show what's possible when you choose the right 
+https://www.euroclear.com/newsandinsights/en/press/2026/mr-10-euroclear-clearstream-digitise-eurobond-issuance.html
+
+**I built this tested working prototype** to show what's possible when you choose the right 
 tool for each layer instead of forcing everything into a single-language stack.
 
 This isn't production-ready. It's a demonstration of:
