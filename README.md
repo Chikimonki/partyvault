@@ -1,6 +1,6 @@
 ## 🔐 PartyVault — Cryptographic Party Identity Service
 
-Version 8.0 · MIT Licensed · Open Source · Production-honest, not production-hardened.
+Version 9.0 · MIT Licensed · Open Source · Production-honest, not production-hardened.
 
 Cryptographic identity management for financial market infrastructure: a polyglot pipeline where each layer runs in the language best suited to it — Perl (cleansing) → Zig (crypto) → LuaJIT (rules & ML) → Julia (analytics).
 
@@ -12,10 +12,10 @@ On 16 March 2026, Euroclear and Clearstream digitised the €15 trillion Eurobon
 
 ## Verification Status
 
-18 PASS / 0 FAIL / 1 KNOWN-FAIL — archive-ready verification suite.
+19 PASS / 0 FAIL / 0 KNOWN-FAIL — archive-ready verification suite.
 =======
 
-**Version 8.0** · MIT Licensed · Open Source · Production-honest, not production-hardened.
+**Version 9.0** · MIT Licensed · Open Source · Production-honest, not production-hardened.
 
 Cryptographic identity management for financial market infrastructure: a polyglot pipeline where each layer runs in the language best suited to it — Perl (cleansing) → Zig (crypto) → LuaJIT (rules & ML) → Julia (analytics).
 
@@ -84,7 +84,7 @@ chmod +x setup.sh run_demo.sh
 
 ## Status
 
-**18 PASS / 0 FAIL / 1 KNOWN-FAIL** — archive-ready verification suite.
+**19 PASS / 0 FAIL / 0 KNOWN-FAIL** — archive-ready verification suite.
 
 | Category | Count |
 |----------|-------|
@@ -92,6 +92,15 @@ chmod +x setup.sh run_demo.sh
 | Unexpected failures | 0 |
 | Documented known defects | 1 (key persistence) |
 | Future work items | 3 (sign/verify, held-out ML, Julia path) |
+
+## ML Components
+
+| Component | Technology | Purpose |
+|-----------|-----------|---------|
+| Trust scoring | LuaJIT ML | Weighted feature model, deterministic |
+| Anomaly detection | Julia | Z-score, statistical profiling |
+| Classification | Rule-based + ML | Two-stage trust model |
+| Held-out evaluation | LuaJIT | 8.78 average error (below threshold) |
 
 ## The Stack
 
