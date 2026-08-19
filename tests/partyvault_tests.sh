@@ -101,8 +101,8 @@ check "Müller survives cleansing byte-for-byte" grep -q "Jean-Pierre Müller & 
 
 # --- T10: deduplication integrity ------------------------------------------------
 echo "[T10] Dedup integrity"
-K1=$(grep "^P001," "$CLEANSED" | cut -d, -f15)
-K4=$(grep "^P004," "$CLEANSED" | cut -d, -f15)
+K1=$(grep "^P001," "$CLEANSED" | grep -oE '[0-9a-f]{16}' | head -1)
+K4=$(grep "^P004," "$CLEANSED" | grep -oE '[0-9a-f]{16}' | head -1)
 if [ -n "$K1" ] && [ "$K1" = "$K4" ]; then
   ok "P001/P004 share dedup_key ($K1)"
 else bad "P001/P004 dedup keys differ ($K1 vs $K4)"; fi
