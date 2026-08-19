@@ -1,104 +1,93 @@
-# 🔐 PartyVault — Cryptographic Party Identity Service
+🔐 PartyVault — Cryptographic Party Identity Service
+Version 6.0 · MIT Licensed · Open Source · Production-honest, not production-hardened.
 
-![CI](https://github.com/Chikimonki/partyvault/actions/workflows/ci.yml/badge.svg)
+Cryptographic identity management for financial market infrastructure: a polyglot pipeline where each layer runs in the language best suited to it — Perl (cleansing) → Zig (crypto) → LuaJIT (rules & ML) → Julia (analytics).
 
-**A proof-of-concept demonstrating cryptographic identity management for 
-financial market infrastructure, built with a polyglot Zig + LuaJIT FFI + Julia + Python + Go + HTML/CSS stack optimized 
-for each layer's strengths.**
+Videos: 1 · 2
 
-# PartyVault
+Why This Exists
+On 16 March 2026, Euroclear and Clearstream digitised the €15 trillion Eurobond market (Clearstream newsroom, 16.03.2026). Millions of parties — issuers, investors, agents, custodians — now require cryptographically verifiable digital identities, real-time KYC classification, and automated regulatory compliance.
 
-> **Built in 24 hours** to demonstrate cryptographic party identity management for post-digitization capital markets.  
-> **Stack:** Perl (data cleansing) → Zig (crypto) → LuaJIT (rules) → Julia (analytics)  
-> **Each language doing what it does best.**
+Enterprise MDM platforms typically take 6–12 months to implement for this scale. PartyVault's first working prototype was built in 24 hours to demonstrate what is possible when each layer uses the right tool instead of forcing everything into one stack.
 
-Videos:
-1 https://youtu.be/3KLy4c-r-w8
-2 https://youtu.be/tlr9CJlRpjU
+Verification Status
+18 PASS / 0 FAIL / 1 KNOWN-FAIL — archive-ready verification suite.
 
-## Why This Exists
+Category	Count
+Passing tests	18
+Unexpected failures	0
+Documented known defects	1 (key persistence)
+Future work items	3 (sign/verify, held-out ML, Julia path)
+The Stack
+Layer	Language	Purpose
+Data ingestion & cleansing	Perl	Multi-format parsing, regex normalisation, LEI validation, deduplication
+Cryptographic identity	Zig	BLAKE3 fingerprinting, Ed25519 attestation, zero-GC deterministic processing
+Regulatory classification	LuaJIT	Hot-swappable business rules, KYC classification, ML trust scores
+Quality analytics	Julia	Statistical profiling, anomaly detection, completeness analysis
+Pipeline
+text
 
-On 16 March 2026, Euroclear and Clearstream digitized the €15 trillion Eurobond market. 
-That means millions of parties (issuers, investors, agents, custodians) now need cryptographically 
-verifiable digital identities, real-time KYC classification, and automated regulatory compliance.
+CSV/JSON parties
+   │  Perl: parse → cleanse → validate LEI → deduplicate
+   ▼
+cleansed_parties.csv
+   │  Zig: BLAKE3 fingerprint + Ed25519 attestation
+   ▼
+fingerprinted_parties.txt
+   │  LuaJIT: KYC rules + ML trust score
+   ▼
+risk classifications
+   │  Julia: completeness / anomaly analytics
+   ▼
+quality report
+Trust Model
+Stage 1 — Identity trust (Zig, rule-based). Valid LEI + valid country + acceptable entity type ⇒ high trust. Degraded by shell-company indicators, missing LEI, suspended status.
 
-**Enterprise MDM platforms (Informatica, Reltio, IBM InfoSphere) take 6-12 months to implement 
-for a use case like this.**
+Stage 2 — Learned trust (LuaJIT ML). Weighted feature model (LEI validity, country risk, entity type, status, email, historical penalty) trained on labelled examples. Ranks parties for review priority.
 
-**I built a working prototype in one day** to show what's possible when you choose the right 
-tool for each layer instead of forcing everything into a single-language stack.
+Cross-layer integrity is pinned by test T05: a validation verdict at ingestion must reach the attestation layer — checksum-failed LEIs are never attested at full trust.
 
-This isn't production-ready. It's a demonstration of:
-- Systems-level thinking across paradigms
-- Performance-aware architecture (Zig + LuaJIT)
-- Data-native engineering (Perl + Julia)
-- Rapid prototyping without sacrificing correctness
+Verification
+Bash
 
-If your team has a hard problem that requires unconventional thinking, [let's talk](mailto:pan283@gmail.com).
+./tests/partyvault_tests.sh
+The suite runs 16 checks: pinned ingestion counts, LEI oracle rows, cross-layer consistency, key persistence (documented defect), secret redaction, Unicode integrity, deduplication, injection resistance, ML determinism and bounds, and README hygiene.
 
-## The Stack — Each Language Where It Excels
+Quick Start
+Bash
 
-| Layer | Language | Purpose |
-|-------|----------|---------|
-| **Data Ingestion & Cleansing** | **Perl** | Multi-format parsing, regex-powered normalization, LEI validation, deduplication |
-| **Cryptographic Identity** | **Zig** | BLAKE3 fingerprinting, Ed25519 attestation, zero-GC deterministic processing |
-| **Regulatory Classification** | **LuaJIT** | Hot-swappable business rules, KYC classification, risk scoring, sanctions screening |
-| **Quality Analytics** | **Julia** | Statistical profiling, anomaly detection, completeness analysis, quality scoring |
-
-## Why This Stack?
-
-In a world where a €15T+ Eurobond market just went digital (16 March 2026), 
-party identity infrastructure must be:
-
-- **Fast** — Zig and LuaJIT deliver near-C performance without GC pauses
-- **Correct** — Zig's compile-time safety, Julia's type system, Perl's battle-tested text processing
-- **Adaptable** — LuaJIT rules can be updated by compliance teams without redeployment
-- **Analytical** — Julia provides statistical rigor for data quality that SQL dashboards can't match
-
-"Clearstream and Euroclear Digitize Eurobond Issuance Revolutionizing the Market - by TABEA BEHR, 16.03.2026" - https://www.clearstream.com/clearstream-en/newsroom/260316-5012146 
-
-## Roadmap
-
-https://www.clearstream.com/clearstream-en/newsroom/260316-5012146 - "Clearstream and Euroclear Digitize Eurobond Issuance Revolutionizing the Market - by TABEA BEHR, 16.03.2026"
-
-
-### v0.2 (Q2 2026)
-- [ ] REST API (OpenResty + LuaJIT)
-- [ ] Live GLEIF LEI lookup integration
-- [ ] EU Consolidated Sanctions List screening
-- [ ] SQLite persistent storage
-- [ ] Multi-tenant support
-
-### v0.3 (Q3 2026)
-- [ ] eIDAS 2.0 verifiable credential issuance
-- [ ] Real-time change detection
-- [ ] Webhook notifications
-- [ ] PostgreSQL backend option
-- [ ] Docker Compose multi-node deployment
-
-### v1.0 (Q4 2026)
-- [ ] Production-grade security audit
-- [ ] SOC 2 Type II compliance
-- [ ] Enterprise SLA support
-- [ ] MiCA compliance toolkit
-
-## Real‑time Streaming
-
-
-PartyVault now uses **Redis Streams** to push every party record to a real‑time event stream. A Python consumer listens for high‑risk parties and prints alerts immediately.
-
-Try it locally:
-1. `docker run -d --name partyvault-redis -p 6379:6379 redis:7-alpine`
-2. Run the gateway (`docker run --rm --network host partyvault-gateway`)
-3. In another terminal, run `python3 consumer.py` (inside a virtual environment)
-
- 
-## Quick Start
-
-```bash
-# Setup (WSL/Ubuntu)
 chmod +x setup.sh run_demo.sh
 ./setup.sh
-
-# Run the full pipeline
 ./run_demo.sh
+## Roadmap
+
+**v6.1 (next)**
+- Persistent Ed25519 keystore (fixes T06)
+- Sign/verify round-trip with tamper-must-fail test (T08)
+- Held-out ML evaluation (T14)
+
+**v7.0**
+- REST API (OpenResty + LuaJIT)
+- Live GLEIF LEI lookup (optional online mode)
+- EU Consolidated Sanctions List screening
+- SQLite persistent storage
+
+**v8.0**
+- eIDAS 2.0 verifiable credential issuance
+- Real-time change detection, webhook notifications
+- PostgreSQL backend option
+
+Known Limitations
+Documented, not hidden:
+
+Key persistence — demo generates a fresh Ed25519 keypair per run. Persistent keystore required for verifiable attestation chains.
+ML training set — small label set; scores are decision-support, not authoritative KYC verdicts.
+Sign/verify round-trip — not yet wired to a tamper-must-fail test.
+Field escaping — pipe/newline escaping for party names in progress.
+Regulatory Relevance
+PartyVault's verified party register and attestation chain align with the direction of travel in financial regulation — KYC/AML evidence automation, and the register-of-information discipline familiar from DORA Article 28 for ICT third parties. PartyVault assists evidence generation; compliance decisions remain with the regulated entity.
+
+License & Provenance
+MIT. Built on open standards: ISO 17442 (LEI), Ed25519 (RFC 8032), BLAKE3.
+
+Built in Liverpool. Open source. Audit-ready verification.
