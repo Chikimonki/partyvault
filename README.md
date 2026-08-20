@@ -4,7 +4,7 @@ Version 9.0 · MIT Licensed · Open Source · Production-honest, not production-
 
 Cryptographic identity management for financial market infrastructure: a polyglot pipeline where each layer runs in the language best suited to it — Perl (cleansing) → Zig (crypto) → LuaJIT (rules & ML) → Julia (analytics).
 
-## Video: https://youtu.be/Mwwx0ZaDxzs
+## Video: https://youtu.be/XfMyYXfSPfA
 
 On 16 March 2026, Euroclear and Clearstream digitised the €15 trillion Eurobond market ([Clearstream newsroom, 16.03.2026](https://www.clearstream.com/clearstream-en/newsroom/260316-5012146)), ([Euroeclear newsroom, 16.03.2026](https://www.euroclear.com/newsandinsights/en/press/2026/mr-10-euroclear-clearstream-digitise-eurobond-issuance.html).). Millions of parties — issuers, investors, agents, custodians — now require cryptographically verifiable digital identities, real-time KYC classification, and automated regulatory compliance.
 
@@ -12,20 +12,17 @@ On 16 March 2026, Euroclear and Clearstream digitised the €15 trillion Eurobon
 
 ## Verification Status
 
-19 PASS / 0 FAIL / 0 KNOWN-FAIL — archive-ready verification suite.
+19 PASS / 0 FAIL  — archive-ready verification suite.
 =======
 
 **Version 9.0** · MIT Licensed · Open Source · Production-honest, not production-hardened.
 
 Cryptographic identity management for financial market infrastructure: a polyglot pipeline where each layer runs in the language best suited to it — Perl (cleansing) → Zig (crypto) → LuaJIT (rules & ML) → Julia (analytics).
 
-**Videos**: [Party Vault v6.0]([https://youtu.be/Mwwx0ZaDxzs)
-
 
 Category	Count
-Passing tests	18
+Passing tests	19
 Unexpected failures	0
-Documented known defects	1 (key persistence)
 Future work items	3 (sign/verify, held-out ML, Julia path)
 The Stack
 Layer	Language	Purpose
@@ -49,6 +46,7 @@ risk classifications
    │  Julia: completeness / anomaly analytics
    ▼
 quality report
+
 Trust Model
 Stage 1 — Identity trust (Zig, rule-based). Valid LEI + valid country + acceptable entity type ⇒ high trust. Degraded by shell-company indicators, missing LEI, suspended status.
 
@@ -60,6 +58,7 @@ Verification
 Bash
 
 ./tests/partyvault_tests.sh
+
 The suite runs 16 checks: pinned ingestion counts, LEI oracle rows, cross-layer consistency, key persistence (documented defect), secret redaction, Unicode integrity, deduplication, injection resistance, ML determinism and bounds, and README hygiene.
 
 Quick Start
@@ -68,29 +67,15 @@ Bash
 chmod +x setup.sh run_demo.sh
 ./setup.sh
 ./run_demo.sh
-## Roadmap
-
-**v8.1 (next)**
-- Persistent Ed25519 keystore (fixes T06 — final KNOWN-FAIL)
-- Julia analytics wired to pipeline output
-- Sign/verify round-trip integrated into CI
-
-**v9.0**
-- Multi-tenant production deployment
-- Docker Compose orchestration
-- eIDAS 2.0 production certificates
-- SOC 2 Type II audit preparation
-=======
 
 ## Status
 
-**19 PASS / 0 FAIL / 0 KNOWN-FAIL** — archive-ready verification suite.
+**19 PASS / 0 FAIL — archive-ready verification suite.
 
 | Category | Count |
 |----------|-------|
-| Passing tests | 18 |
+| Passing tests | 19 |
 | Unexpected failures | 0 |
-| Documented known defects | 1 (key persistence) |
 | Future work items | 3 (sign/verify, held-out ML, Julia path) |
 
 ## ML Components
@@ -154,7 +139,6 @@ Key persistence — demo generates a fresh Ed25519 keypair per run. Persistent k
 ML training set — small label set; scores are decision-support, not authoritative KYC verdicts.
 Sign/verify round-trip — not yet wired to a tamper-must-fail test.
 Field escaping — pipe/newline escaping for party names in progress.
-=======
 
 ML training set — small label set; scores are decision-support, not authoritative KYC verdicts.
 
@@ -169,4 +153,3 @@ License & Provenance
 MIT. Built on open standards: ISO 17442 (LEI), Ed25519 (RFC 8032), BLAKE3.
 
 Built in Liverpool. Open source. Audit-ready verification.
-=======

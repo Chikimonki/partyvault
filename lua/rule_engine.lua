@@ -1,23 +1,19 @@
 #!/usr/bin/env luajit
--- ============================================================
--- PartyVault Business Rule Engine (LuaJIT)
+-- =====================================================-- PartyVault Business Rule Engine (LuaJIT)
 --
 -- Hot-swappable regulatory classification rules.
 -- In production, rules would be loaded from external config
 -- and updated without recompilation — this is the key
 -- architectural advantage of embedded Lua.
--- ============================================================
-
+-- =====================================================
 local ffi = require("ffi")
 
 io.stderr:write("[LUAJIT/RULES] PartyVault Business Rule Engine starting...\n")
 
--- ============================================================
--- REGULATORY CLASSIFICATION RULES
+-- =====================================================-- REGULATORY CLASSIFICATION RULES
 -- These would be loaded from external files in production,
 -- enabling regulatory teams to update rules without code changes.
--- ============================================================
-
+-- =====================================================
 local rules = {}
 
 -- Rule: KYC Level Assignment
@@ -27,37 +23,10 @@ rules.kyc_level = function(party)
         return "SIMPLIFIED", "Regulated FMI — simplified due diligence per MiFID II Art. 13"
     end
     
-    -- Credit institutions in EU/EEA — standard due diligence
-<<<<<<< HEAD
-    if party.entity_type == "CREDIT_INSTITUTION" and party.country_valid == "1" then
-=======
-        if party.entity_type == "CREDIT_INSTITUTION" and (party.country_valid == "1" or party.country_valid == "true") then
->>>>>>> 2d6a5aa629690bf00821eb5ec395123a0247b587
-        local eu_countries = {
-            DE=true, FR=true, BE=true, NL=true, LU=true, IT=true, ES=true,
-            PT=true, AT=true, FI=true, IE=true, GR=true, SE=true, DK=true,
-            PL=true, CZ=true, HU=true, RO=true, BG=true, HR=true, SI=true,
-            SK=true, LT=true, LV=true, EE=true, CY=true, MT=true
-        }
-        if eu_countries[party.country] then
-            return "STANDARD", "EU credit institution — standard CDD"
-        end
-    end
-    
-    -- Offshore jurisdictions — enhanced due diligence
-    local offshore = { KY=true, BS=true, BM=true, VG=true, JE=true, GG=true, IM=true, PA=true }
-    if offshore[party.country] then
-        return "ENHANCED", "Offshore jurisdiction — enhanced due diligence required"
-    end
-    
-    -- Shell companies always enhanced
-    if party.entity_type == "SHELL_COMPANY" then
-        return "ENHANCED", "Shell company classification — enhanced due diligence mandatory"
-    end
-    
-    -- Default
-    return "STANDARD", "Default classification"
+    -- Default: standard due diligence
+    return "STANDARD", "Standard due diligence required"
 end
+    
 
 -- Rule: Regulatory Reporting Obligations
 rules.reporting_obligations = function(party)
@@ -76,11 +45,7 @@ rules.reporting_obligations = function(party)
     end
     
     -- LEI mandatory for all regulated entities
-<<<<<<< HEAD
-    if party.lei_valid ~= "1" then
-=======
-        if party.lei_valid ~= "1" and party.lei_valid ~= "true" then
->>>>>>> 2d6a5aa629690bf00821eb5ec395123a0247b587
+    if party.lei_valid ~= "1" and party.lei_valid ~= "true" then
         table.insert(obligations, "LEI_REQUIRED_MISSING")
     end
     
@@ -102,11 +67,7 @@ rules.risk_score = function(party)
     local factors = {}
     
     -- LEI validation
-<<<<<<< HEAD
-    if party.lei_valid ~= "1" then
-=======
-        if party.lei_valid ~= "1" and party.lei_valid ~= "true" then
->>>>>>> 2d6a5aa629690bf00821eb5ec395123a0247b587
+    if party.lei_valid ~= "1" and party.lei_valid ~= "true" then
         score = score + 30
         table.insert(factors, "NO_VALID_LEI(+30)")
     end
@@ -176,10 +137,8 @@ rules.sanctions_flags = function(party)
     return flags
 end
 
--- ============================================================
--- PROCESSING ENGINE
--- ============================================================
-
+-- =====================================================-- PROCESSING ENGINE
+-- =====================================================
 local function parse_identity_line(line)
     -- Parse Zig crypto output format:
     -- IDENTITY|id|name|country|fingerprint|lei|entity_type|lei_valid=X|country_valid=X|trust=Y
@@ -201,16 +160,22 @@ local function parse_identity_line(line)
         entity_type = parts[7],
     }
     
-    -- Parse key=value fields
+    -- Parse key=value fields (trim whitespace first)
     for i = 8, #parts do
-        local key, val = parts[i]:match("^(%w+)=(.+)$")
+        local field = parts[i]:match("^%s*(.-)%s*$")  -- trim
+        local key, val = field:match("^([%w_]+)=(.+)$")
         if key then
             party[key] = val
         end
     end
     
-    -- Parse trust score
+    -- Parse trust score — use ML Stage-2 for compliance prioritisation
+    package.path = "./lua/?.lua;" .. package.path
+local MLTrustScore = require("ml_trust_score")
     party.trust_score = party.trust or "0"
+    party.ml_trust_score = MLTrustScore.calculate(party)
+    -- Stage-2 ML score governs compliance review
+    party.compliance_trust = party.ml_trust_score
     -- Parse status from notes or default
     party.status = party.status or "ACTIVE"
     
@@ -278,7 +243,6 @@ io.stderr:write(string.format(
     processed, high_risk_count
 ))
 io.stderr:write("[LUAJIT/RULES] Rule engine complete.\n")
-<<<<<<< HEAD
 
 -- Fleet integration (added for distributed identity)
 local Fleet = require("fleet")
@@ -287,10 +251,9 @@ local Fleet = require("fleet")
 function verify_across_fleet(party_name, party_lei)
     return Fleet.verify_party(party_name, party_lei)
 end
-=======
->>>>>>> 2d6a5aa629690bf00821eb5ec395123a0247b587
 
 -- ML-enhanced trust scoring (added 2026)
+package.path = "./lua/?.lua;" .. package.path
 local MLTrustScore = require("ml_trust_score")
 
 -- Override the old trust score with ML version
