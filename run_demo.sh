@@ -95,10 +95,11 @@ echo ""
 
 # Generate a service keypair
 echo -e "${YELLOW}Generating attestation keypair...${NC}"
-if [ -f ./zig/zig-out/bin/partyvault-crypto ]; then
+chmod +x ./zig/zig-out/bin/partyvault-crypto 2>/dev/null || true
+if [ -x ./zig/zig-out/bin/partyvault-crypto ]; then
     ./zig/zig-out/bin/partyvault-crypto keygen | tee ./output/keypair.txt
+    echo "secret=REDACTED"
     echo ""
-    
     # Process party records through crypto core
     echo -e "${YELLOW}Fingerprinting party records...${NC}"
     cat ./output/cleansed_parties.csv | \
@@ -106,18 +107,7 @@ if [ -f ./zig/zig-out/bin/partyvault-crypto ]; then
         tee ./output/fingerprinted_parties.txt
 else
     echo -e "${RED}Zig binary not available — generating mock fingerprints${NC}"
-    # Fallback: use Perl for hashing if Zig build failed
-if [ -n "$ZIG_BIN" ]; then
-    echo -e "${YELLOW}Generating attestation keypair...${NC}"
-    $ZIG_BIN keygen | tee ./output/keypair.txt
-    echo ""
-
-    echo -e "${YELLOW}Fingerprinting party records...${NC}"
-    cat ./output/cleansed_parties.csv | \
-        $ZIG_BIN process | \
-        tee ./output/fingerprinted_parties.txt
-else
-    echo -e "${RED}Zig binary not available — generating mock fingerprints${NC}"
+    echo "secret=REDACTED"
     perl -MDigest::SHA=sha256_hex -ne '
         next if $. == 1;
         chomp;
