@@ -9,6 +9,8 @@
 [![Tests](https://img.shields.io/badge/tests-21_PASS_0_FAIL-00C853?style=for-the-badge)](#-verification)
 [![DORA](https://img.shields.io/badge/DORA-Art.28_ready-0288D1?style=for-the-badge)](#-regulatory-relevance)
 [![Eurobond](https://img.shields.io/badge/Eurobond-€15T_digitised-7B1FA2?style=for-the-badge)](#-video)
+[![Stars](https://img.shields.io/github/stars/Chikimonki/partyvault?style=social)](https://github.com/Chikimonki/partyvault/stargazers)
+[![Forks](https://img.shields.io/github/forks/Chikimonki/partyvault?style=social)](https://github.com/Chikimonki/partyvault/forks)
 
 <br>
 
