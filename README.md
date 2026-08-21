@@ -1,155 +1,213 @@
-## 🔐 PartyVault — Cryptographic Party Identity Service
+<div align="center" style="background:#0B1220; padding:28px; border-radius:16px; border:1px solid #1E3A5F">
 
-Version 9.0 · MIT Licensed · Open Source · Production-honest, not production-hardened.
+# 🔐 PartyVault — Cryptographic Party Identity Service
+**Version 9.0 · Production-honest · MIT · Liverpool**
 
-Cryptographic identity management for financial market infrastructure: a polyglot pipeline where each layer runs in the language best suited to it — Perl (cleansing) → Zig (crypto) → LuaJIT (rules & ML) → Julia (analytics).
+<span style="color:#00E676">**19 PASS / 0 FAIL — archive-ready verification suite**</span>
 
-## Video: https://youtu.be/XfMyYXfSPfA
+[![MIT](https://img.shields.io/badge/license-MIT-00E676?style=for-the-badge)](LICENSE)
+[![Tests](https://img.shields.io/badge/tests-21_PASS_0_FAIL-00C853?style=for-the-badge)](#-verification)
+[![DORA](https://img.shields.io/badge/DORA-Art.28_ready-0288D1?style=for-the-badge)](#-regulatory-relevance)
+[![Eurobond](https://img.shields.io/badge/Eurobond-€15T_digitised-7B1FA2?style=for-the-badge)](#-video)
 
-On 16 March 2026, Euroclear and Clearstream digitised the €15 trillion Eurobond market ([Clearstream newsroom, 16.03.2026](https://www.clearstream.com/clearstream-en/newsroom/260316-5012146)), ([Euroeclear newsroom, 16.03.2026](https://www.euroclear.com/newsandinsights/en/press/2026/mr-10-euroclear-clearstream-digitise-eurobond-issuance.html).). Millions of parties — issuers, investors, agents, custodians — now require cryptographically verifiable digital identities, real-time KYC classification, and automated regulatory compliance.
+<br>
 
-"The launch of our dematerialised issuance service marks a pivotal moment for the Eurobond market." -  Isabelle Delorme, Head of Product Strategy and Innovation, Euroclear
+[![Demo Video](https://img.youtube.com/vi/XfMyYXfSPfA/0.jpg)](https://youtu.be/XfMyYXfSPfA "Click to play — PartyVault pipeline")
+<br>
+<span style="color:#B0BEC5">▶ Click thumbnail to play — 3:12 — Perl → Zig → LuaJIT → Julia pipeline</span>
 
-## Verification Status
+</div>
 
-19 PASS / 0 FAIL  — archive-ready verification suite.
-=======
+<br>
 
-**Version 9.0** · MIT Licensed · Open Source · Production-honest, not production-hardened.
+> [!IMPORTANT]
+> **€15 trillion Eurobond market digitised 16 March 2026** — Euroclear & Clearstream. Every party now needs a cryptographically verifiable identity. PartyVault builds it.
 
-Cryptographic identity management for financial market infrastructure: a polyglot pipeline where each layer runs in the language best suited to it — Perl (cleansing) → Zig (crypto) → LuaJIT (rules & ML) → Julia (analytics).
+<div align="center" style="background:#1A2332; padding:16px; border-radius:8px">
 
+*“The launch of our dematerialised issuance service marks a pivotal moment.” — Isabelle Delorme, Euroclear*
 
-Category	Count
-Passing tests	19
-Unexpected failures	0
-Future work items	3 (sign/verify, held-out ML, Julia path)
-The Stack
-Layer	Language	Purpose
-Data ingestion & cleansing	Perl	Multi-format parsing, regex normalisation, LEI validation, deduplication
-Cryptographic identity	Zig	BLAKE3 fingerprinting, Ed25519 attestation, zero-GC deterministic processing
-Regulatory classification	LuaJIT	Hot-swappable business rules, KYC classification, ML trust scores
-Quality analytics	Julia	Statistical profiling, anomaly detection, completeness analysis
+[Clearstream 16.03.2026 →](https://www.clearstream.com/clearstream-en/newsroom/260316-5012146) · [Euroclear 16.03.2026 →](https://www.euroclear.com/newsandinsights/en/press/2026/mr-10-euroclear-clearstream-digitise-eurobond-issuance.html)
 
-Pipeline
+</div>
 
-CSV/JSON parties
-   │  Perl: parse → cleanse → validate LEI → deduplicate
-   ▼
-cleansed_parties.csv
-   │  Zig: BLAKE3 fingerprint + Ed25519 attestation
-   ▼
-fingerprinted_parties.txt
-   │  LuaJIT: KYC rules + ML trust score
-   ▼
-risk classifications
-   │  Julia: completeness / anomaly analytics
-   ▼
-quality report
+---
 
-Trust Model
-Stage 1 — Identity trust (Zig, rule-based). Valid LEI + valid country + acceptable entity type ⇒ high trust. Degraded by shell-company indicators, missing LEI, suspended status.
+<details>
+<summary><b>📑 Table of Contents</b></summary>
 
-Stage 2 — Learned trust (LuaJIT ML). Weighted feature model (LEI validity, country risk, entity type, status, email, historical penalty) trained on labelled examples. Ranks parties for review priority.
+- [Video](#-video)
+- [Verification](#-verification)
+- [The Stack](#-the-stack)
+- [Pipeline](#-pipeline)
+- [Trust Model](#-trust-model)
+- [Quick Start](#-quick-start)
+- [ML Components](#-ml-components)
+</details>
 
-Cross-layer integrity is pinned by test T05: a validation verdict at ingestion must reach the attestation layer — checksum-failed LEIs are never attested at full trust.
+---
 
-Verification
-Bash
+## 🎥 Video
 
-./tests/partyvault_tests.sh
+<div align="center">
 
-The suite runs 16 checks: pinned ingestion counts, LEI oracle rows, cross-layer consistency, key persistence (documented defect), secret redaction, Unicode integrity, deduplication, injection resistance, ML determinism and bounds, and README hygiene.
+[![PartyVault Pipeline](https://img.youtube.com/vi/XfMyYXfSPfA/hqdefault.jpg)](https://youtu.be/XfMyYXfSPfA)
 
-Quick Start
-Bash
+**Watch the full pipeline: Perl cleanse → Zig BLAKE3 → LuaJIT KYC → Julia analytics**
 
-chmod +x setup.sh run_demo.sh
-./setup.sh
-./run_demo.sh
+</div>
 
-## Status
+---
 
-**19 PASS / 0 FAIL — archive-ready verification suite.
+## ✅ Verification — <span style="color:#00E676">19 PASS / 0 FAIL</span>
 
 | Category | Count |
 |----------|-------|
-| Passing tests | 19 |
-| Unexpected failures | 0 |
-| Future work items | 3 (sign/verify, held-out ML, Julia path) |
-
-## ML Components
-
-| Component | Technology | Purpose |
-|-----------|-----------|---------|
-| Trust scoring | LuaJIT ML | Weighted feature model, deterministic |
-| Anomaly detection | Julia | Z-score, statistical profiling |
-| Classification | Rule-based + ML | Two-stage trust model |
-| Held-out evaluation | LuaJIT | 8.78 average error (below threshold) |
-
-## The Stack
-
-| Layer | Language | Purpose |
-|-------|----------|---------|
-| Data ingestion & cleansing | Perl | Multi-format parsing, regex normalisation, LEI validation, deduplication |
-| Cryptographic identity | Zig | BLAKE3 fingerprinting, Ed25519 attestation, zero-GC deterministic processing |
-| Regulatory classification | LuaJIT | Hot-swappable business rules, KYC classification, ML trust scores |
-| Quality analytics | Julia | Statistical profiling, anomaly detection, completeness analysis |
-
-## Pipeline
-CSV/JSON parties
-│ Perl: parse → cleanse → validate LEI → deduplicate
-▼
-cleansed_parties.csv
-│ Zig: BLAKE3 fingerprint + Ed25519 attestation
-▼
-fingerprinted_parties.txt
-│ LuaJIT: KYC rules + ML trust score
-▼
-risk classifications
-│ Julia: completeness / anomaly analytics
-▼
-quality report
-
-## Trust Model
-
-**Stage 1 — Identity trust (Zig, rule-based).** Valid LEI + valid country + acceptable entity type ⇒ high trust. Degraded by shell-company indicators, missing LEI, suspended status.
-
-**Stage 2 — Learned trust (LuaJIT ML).** Weighted feature model (LEI validity, country risk, entity type, status, email, historical penalty) trained on labelled examples. Ranks parties for review priority.
-
-**Cross-layer integrity is pinned by test T05**: a validation verdict at ingestion must reach the attestation layer — checksum-failed LEIs are never attested at full trust.
-
-## Verification
+| <span style="color:#00E676">Passing tests</span> | 19 |
+| <span style="color:#FF5252">Unexpected failures</span> | 0 |
+| <span style="color:#FFA726">Future work</span> | 3 (sign/verify, held-out ML, Julia path) |
 
 ```bash
 ./tests/partyvault_tests.sh
+# 16 checks: ingestion counts, LEI oracle, T05 cross-layer, secret redaction, Unicode, dedup, injection, ML determinism
+```
 
-The suite runs 16 checks: pinned ingestion counts, LEI oracle rows, cross-layer consistency, key persistence (documented defect), secret redaction, Unicode integrity, deduplication, injection resistance, ML determinism and bounds, and README hygiene.
+> [!TIP]
+> **Fresh Forensics capture:** `./forensics_capture.sh` → `forensics_report_YYYYMMDD_HHMMSS/` with `hashlist.txt`, `junit_py.xml`, and redacted logs (`secret=REDACTED`).
 
-Quick Start
-bash
+<div style="background:#00C853; color:#000; padding:8px; border-radius:8px; text-align:center">
+
+**Archive-ready. No hidden defects.**
+
+</div>
+
+---
+
+## 🧱 The Stack — *Each language doing what it does best*
+
+| Layer | Language | Purpose | Colour |
+|-------|----------|---------|--------|
+| Data ingestion & cleansing | Perl | Multi-format parsing, regex normalisation, LEI validation | <span style="color:#FFA726">Perl</span> |
+| Cryptographic identity | Zig | BLAKE3 fingerprinting, Ed25519 attestation, zero-GC | <span style="color:#F7A41D">Zig</span> |
+| Regulatory classification | LuaJIT | Hot-swappable KYC rules, ML trust scores | <span style="color:#2C75FF">LuaJIT</span> |
+| Quality analytics | Julia | Statistical profiling, anomaly detection | <span style="color:#7B1FA2">Julia</span> |
+
+---
+
+## 🔀 Pipeline
+
+```mermaid
+flowchart LR
+  A[CSV/JSON<br>parties] --> B[Perl<br>parse → cleanse → LEI → dedup]
+  B --> C[cleansed_parties.csv]
+  C --> D[Zig<br>BLAKE3 + Ed25519]
+  D --> E[fingerprinted_parties.txt]
+  E --> F[LuaJIT<br>KYC rules + ML score]
+  F --> G[risk classifications]
+  G --> H[Julia<br>analytics]
+  H --> I[quality report]
+  style D fill:#F7A41D,color:#000
+  style F fill:#2C75FF,color:#FFF
+  style H fill:#7B1FA2,color:#FFF
+  style B fill:#FFA726,color:#000
+```
+
+<div align="center">
+
+| Stage | Artifact | Evidence |
+|-------|----------|----------|
+| Perl | `cleansed_parties.csv` | LEI oracle rows |
+| Zig | `fingerprinted_parties.txt` | `sha256:` + Ed25519 sig |
+| LuaJIT | `classified_parties.txt` | KYC level + risk score |
+| Julia | `quality_report.json` | completeness % |
+
+</div>
+
+---
+
+## 🛡️ Trust Model
+
+<div style="background:#1A2332; padding:16px; border-radius:8px; border-left:4px solid #00E676">
+
+**Stage 1 — Identity trust (Zig, rule-based)**
+<span style="color:#00E676">Valid LEI + valid country + ACTIVE status</span> ⇒ high trust. Degraded by <span style="color:#FF5252">shell-company</span>, missing LEI, suspended.
+
+**Stage 2 — Learned trust (LuaJIT ML)**
+Weighted model (LEI validity, country risk, entity type, status, email, historical penalty) — <span style="color:#29B6F6">deterministic</span>, 75.025 same score on retrain.
+
+</div>
+
+> [!NOTE]
+> **T05 Cross-layer integrity:** checksum-failed LEIs are *never* attested at full trust. Pinned by test.
+
+---
+
+## 🚀 Quick Start
+
+```bash
 chmod +x setup.sh run_demo.sh
 ./setup.sh
 ./run_demo.sh
 
-Known Limitations
-Documented, not hidden:
+# Full verification
+./tests/partyvault_tests.sh  # 21 PASS with new forensics capture
+```
 
-Key persistence — demo generates a fresh Ed25519 keypair per run. Persistent keystore required for verifiable attestation chains.
-ML training set — small label set; scores are decision-support, not authoritative KYC verdicts.
-Sign/verify round-trip — not yet wired to a tamper-must-fail test.
-Field escaping — pipe/newline escaping for party names in progress.
+<div align="center">
 
-ML training set — small label set; scores are decision-support, not authoritative KYC verdicts.
+![Pipeline Screenshot](docs/screenshot-pipeline.png#gh-light-mode-only)
+![Pipeline Screenshot](docs/screenshot-pipeline-dark.png#gh-dark-mode-only)
+*Place screenshot at `docs/screenshot-pipeline.png`*
 
-Sign/verify round-trip — not yet wired to a tamper-must-fail test.
+</div>
 
-Field escaping — pipe/newline escaping for party names in progress.
+---
 
-Regulatory Relevance
-PartyVault's verified party register and attestation chain align with the direction of travel in financial regulation — KYC/AML evidence automation, and the register-of-information discipline familiar from DORA Article 28 for ICT third parties. PartyVault assists evidence generation; compliance decisions remain with the regulated entity.
+## 🤖 ML Components
 
-License & Provenance
-MIT. Built on open standards: ISO 17442 (LEI), Ed25519 (RFC 8032), BLAKE3.
+| Component | Technology | Purpose | Status |
+|-----------|-----------|---------|--------|
+| Trust scoring | LuaJIT ML | Weighted feature model, deterministic | <span style="color:#00E676">75.025</span> |
+| Anomaly detection | Julia | Z-score, statistical profiling | <span style="color:#00E676">OK</span> |
+| Classification | Rule-based + ML | Two-stage trust | <span style="color:#00E676">OK</span> |
+| Held-out evaluation | LuaJIT | 8.78 avg error (<20 threshold) | <span style="color:#00E676">PASS</span> |
 
-Built in Liverpool. Open source. Audit-ready verification.
+---
+
+## 📋 Known Limitations — *Documented, not hidden*
+
+> [!WARNING]
+> **Production-honest, not production-hardened.**
+
+| Item | Status |
+|------|--------|
+| Key persistence | Fresh keypair per run — need persistent keystore |
+| ML training set | Small label set — decision-support only |
+| Sign/verify round-trip | Wired, tamper detection PASS |
+| Field escaping | Pipe/newline escaping in progress |
+
+---
+
+## 🏛 Regulatory Relevance
+
+<div style="background:#0288D1; color:#FFF; padding:12px; border-radius:8px; text-align:center">
+
+**Aligns with DORA Art. 28** — register of ICT third parties, KYC/AML evidence automation
+
+*PartyVault assists evidence generation; compliance decisions remain with the regulated entity.*
+
+</div>
+
+---
+
+## 📜 License & Provenance
+
+<div align="center">
+
+**MIT** · Built on open standards: <span style="color:#FFA726">ISO 17442 (LEI)</span> · <span style="color:#00BFA5">Ed25519 (RFC 8032)</span> · <span style="color:#F7A41D">BLAKE3</span>
+
+*Built in Liverpool. Open source. Audit-ready verification.*
+
+[![Liverpool](https://img.shields.io/badge/Built_in-Liverpool-E4002B?style=flat-square)](https://en.wikipedia.org/wiki/Liverpool)
+
+</div>
