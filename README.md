@@ -15,6 +15,11 @@
 [![Demo Video](https://img.youtube.com/vi/XfMyYXfSPfA/0.jpg)](https://youtu.be/XfMyYXfSPfA "Click to play — PartyVault pipeline")
 <br>
 <span style="color:#B0BEC5">▶ Click thumbnail to play — 3:12 — Perl → Zig → LuaJIT → Julia pipeline</span>
+<br>
+<span style="color:#B0BEC5">More demos: </span>
+[![Gullwing](https://img.shields.io/badge/Gullwing-YouTube-FF0000?style=flat-square&logo=youtube)](https://youtu.be/bFVrP7GcWYM)
+[![Kestrel](https://img.shields.io/badge/Kestrel-YouTube-FF0000?style=flat-square&logo=youtube)](https://youtu.be/bFVrP7GcWYM)
+[![Channel @Peter-i8b9b](https://img.shields.io/badge/Channel-@Peter--i8b9b-FF0000?style=flat-square&logo=youtube)](https://www.youtube.com/@Peter-i8b9b)
 
 </div>
 
